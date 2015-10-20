@@ -32,13 +32,11 @@ module TeamcityPrisma
                    end                           
       end      
       ThreadsWait.all_waits(*threads)
+
       
-      #puts @@elements.pretty_inspect
+      puts @@elements.pretty_inspect
       puts "Builds in total: #{build_types.count}"
       puts "Builds to analyze: #{@@elements.count} "  
-      
-      
-     
       
       
       #blocks = Array.new
@@ -77,9 +75,42 @@ module TeamcityPrisma
               print "#{@@counter*100/@@blocks_total.round/total}%#{9.chr}template?: #{build_type.id} \r"
         
         
+        #Collect all the steps of builds that are not based on Templates.
         if TeamCity.buildtype(id: "#{build_type.id}")["template"].nil?
-          @@elements << TeamCity.buildtype(id: "#{build_type.id}")
+          
+          steps = Array.new
+          
+          TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].each do |step|
+            steps << step.id
+          end
+          
+          @@elements << { id: "#{build_type.id}", steps: steps }
+        
+            
+      
           print "#{build_type.id}" + fill + "\n"
+            
+          
+        #For builds based on templates ignore their inherited steps.  
+        else
+          
+          steps_template = Array.new
+          TeamCity.buildtype_template(id: build_type.id)["steps"]["step"].each do |step|
+            steps_template << step.id
+          end
+          
+          steps = Array.new
+          
+          TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].each do |step|
+            if !steps_template.include?(step.id)
+              steps << step.id
+            end
+          end
+          
+                    
+          @@elements << { id: "#{build_type.id}", steps: steps }
+          
+          
         end
         @@counter = @@counter + 1
       end
