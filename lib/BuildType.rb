@@ -18,26 +18,31 @@ module TeamcityPrisma
       build_types = Array.new
       build_types = TeamCity.buildtypes
       
-      @@blocks_total = 5.0
+      puts build_types.count*0.002
+      @@blocks_total = 10.0
       blocks = Array.new
       blocks = build_types.each_slice( (build_types.count/@@blocks_total).round ).to_a
       
       
-      
+     
       threads = []
       blocks.each do |block|
-        #print block.count.pretty_inspect()
+        print block.count.pretty_inspect()
         threads << Thread.new do
-                     _find_string_ignore_templates(block)
+                     _get_steps_ignore_templates(block)
                    end                           
       end      
       ThreadsWait.all_waits(*threads)
 
+      #_get_steps_ignore_templates(build_types)
       
-      puts @@elements.pretty_inspect
+      #puts @@elements.pretty_inspect
       puts "Builds in total: #{build_types.count}"
       puts "Builds to analyze: #{@@elements.count} "  
       
+      
+      $result = @@elements
+      $result.flatten!()
       
       #blocks = Array.new
       #blocks = @@elements.each_slice( (@@elements.size/@@blocks_total).round ).to_a
@@ -49,7 +54,7 @@ module TeamcityPrisma
     
     
     
-    def _find_string_ignore_templates(builds)
+    def _get_steps_ignore_templates(builds)
 
       
       #puts TeamCity.buildtype(id:'PackageStoreAPI_Master').steps.pretty_inspect()
@@ -75,42 +80,54 @@ module TeamcityPrisma
               print "#{@@counter*100/@@blocks_total.round/total}%#{9.chr}template?: #{build_type.id} \r"
         
         
-        #Collect all the steps of builds that are not based on Templates.
-        if TeamCity.buildtype(id: "#{build_type.id}")["template"].nil?
+       
+        #While the script is running a build could be deleted. Prevent this situation.
+        unless TeamCity.buildtype(id: "#{build_type.id}").nil?      
+       
           
-          steps = Array.new
-          
-          TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].each do |step|
-            steps << step.id
-          end
-          
-          @@elements << { id: "#{build_type.id}", steps: steps }
-        
+          #Collect all the steps of builds that are not based on Templates.             
+          if TeamCity.buildtype(id: "#{build_type.id}")["template"].nil?
             
-      
-          print "#{build_type.id}" + fill + "\n"
+            steps = Array.new
             
-          
-        #For builds based on templates ignore their inherited steps.  
-        else
-          
-          steps_template = Array.new
-          TeamCity.buildtype_template(id: build_type.id)["steps"]["step"].each do |step|
-            steps_template << step.id
-          end
-          
-          steps = Array.new
-          
-          TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].each do |step|
-            if !steps_template.include?(step.id)
-              steps << step.id
+            unless TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].nil?
+              TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].each do |step|
+                steps << step.id
+              end
             end
+            
+            @@elements << { id: "#{build_type.id}", steps: steps } unless steps.nil?
+          
+              
+        
+            print "#{build_type.id}" + fill + "\n"
+              
+            
+          #For builds based on templates ignore their inherited steps.  
+          else
+            
+            steps_template = Array.new
+            
+            unless TeamCity.buildtype_template(id: build_type.id)["steps"]["step"].nil?
+              TeamCity.buildtype_template(id: build_type.id)["steps"]["step"].each do |step|
+                steps_template << step.id
+              end
+            end
+            
+            steps = Array.new
+            
+            TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].each do |step|
+              if !steps_template.include?(step.id)
+                steps << step.id
+              end
+            end
+            
+                      
+            @@elements << { id: "#{build_type.id}", steps: steps } unless steps.nil?
+            
+            
           end
-          
-                    
-          @@elements << { id: "#{build_type.id}", steps: steps }
-          
-          
+        
         end
         @@counter = @@counter + 1
       end
