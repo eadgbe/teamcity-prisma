@@ -96,7 +96,7 @@ module TeamcityPrisma
               end
             end
             
-            @@elements << { id: "#{build_type.id}", steps: steps } unless steps.nil?
+            @@elements << { id: "#{build_type.id}", steps: steps } if steps.count > 0
           
               
         
@@ -123,7 +123,7 @@ module TeamcityPrisma
             end
             
                       
-            @@elements << { id: "#{build_type.id}", steps: steps } unless steps.nil?
+            @@elements << { id: "#{build_type.id}", steps: steps } if steps.count > 0
             
             
           end
