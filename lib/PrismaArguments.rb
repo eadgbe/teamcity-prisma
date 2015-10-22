@@ -40,6 +40,11 @@ module TeamcityPrisma
           self[:operator] = string
         end
         
+        opts.on('-z', '--step-type [STRING]',
+                'step type when using --type build_type <step type>') do |string|
+          self[:step_type] = string
+        end
+        
         opts.on_tail('-h', '--help', 'display this help and exit') do
           puts opts
           exit
@@ -55,6 +60,7 @@ module TeamcityPrisma
         raise OptionParser::MissingArgument if self[:string]=='' or self[:string].nil?
         raise OptionParser::MissingArgument if self[:site]=='' or self[:site].nil?
         raise OptionParser::MissingArgument if self[:type]=='' or self[:type].nil?
+        raise OptionParser::MissingArgument if self[:step_type]=='' or self[:step_type].nil? if self[:type] == 'build_type'   
            
           
       rescue OptionParser::MissingArgument 
