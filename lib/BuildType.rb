@@ -1,6 +1,7 @@
 module TeamcityPrisma
   
   class BuildType
+    Thread.abort_on_exception=true
     @@params = ["-t", "build_type"]
     $result = Array.new
     @@elements = Array.new
