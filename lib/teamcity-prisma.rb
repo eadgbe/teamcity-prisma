@@ -46,7 +46,7 @@ class Core
     
     
     files = TeamcityPrisma::Files.new(arguments[:mode])
-    files.write_items(TeamCity.vcs_roots)
+    
     
   
     
@@ -97,6 +97,10 @@ class Core
       $prisma._find_string
       
       print "Completed BuildType process                                                                                \r\n"
+      
+    
+      
+      
     
       when "project"
       ###########################################################################
@@ -118,32 +122,7 @@ class Core
       ###
       ###########################################################################
     
-=begin      
-    #begin    
-      
-        
-        
-        TeamCity.vcs_roots.each do |vcs_root|
-          #print TeamCity.vcs_root_details(vcs_root.id).properties.property("agentCleanFilesPolicy")
-          print "                                                                                                     \r"
-          print "#{vcs_root.id} - #{TeamCity.vcs_root_details(vcs_root.id).modificationCheckInterval} - #{arguments[:string].to_i}\r"
-          
-          unless TeamCity.vcs_root_details(vcs_root.id).modificationCheckInterval.nil?
-            if TeamCity.vcs_root_details(vcs_root.id).modificationCheckInterval.to_i < arguments[:string].to_i
-              print "\n#{TeamCity.vcs_root_details(vcs_root.id).modificationCheckInterval} \r" 
-              
-              puts "\n"
-              puts "#{vcs_root.id} - #{TeamCity.vcs_root_details(vcs_root.id).modificationCheckInterval} - #{arguments[:string].to_i}"
-              puts "\n"
-              #TeamcityPrisma::VCS.new
-              puts "\n\n"
-            end
-          end
-          
-        end
-    #end
-=end
-        
+      files.write_items(TeamCity.vcs_roots)  
       $prisma._find_custom_period
     
      
