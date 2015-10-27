@@ -11,11 +11,12 @@ module TeamcityPrisma
     @@found = 0
     @@steps = 0
     
-    def find_string(site, string, step_type)
+    def find_string(site, string, step_type=nil)
       @string = string
       @step_type = step_type
+      @operator = "contains"
       #TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{seconds}", "-o", "#{operator}", "-m", "search"])
-      TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{string}", "-o", "contains", "-m", "search", "-z", "#{step_type}"])
+      TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{string}", "-o", @operator, "-m", "search", "-z", "#{step_type}"])
     end
     
     
@@ -238,7 +239,7 @@ module TeamcityPrisma
              
             
              
-             if property.value.include?(@string)
+             if @step_type.nil? or compare(property.name, @step_type)
                
                $result << { id: "#{element[:id]}", step: step, property: property } 
                print "#{element[:id]} -  #{property.name} " + fill + "\n"
