@@ -225,31 +225,28 @@ module TeamcityPrisma
            
            TeamCity.buildtype(id: element[:id])["steps"]["step"][step]["properties"]["property"].each do |property| 
            
-           total = @@steps
-
-            #puts "stp: #{step} : comparacion #{property["value"].pretty_inspect()} - #{@string}"
-             
-             #puts "#{@@contador}*100 / #{@@blocks_total} / #{total} -  \n\n\n\n"
-         
-             print "#{@@contador} of #{@@steps} steps: "
-             
-             90.times do print " " end
-             print "\r"
-             print "#{@@contador} of #{@@steps} steps, property: #{property.name} \r"
-             
-            
-             
              if @step_type.nil? or compare(property.name, @step_type)
                
-               $result << { id: "#{element[:id]}", step: step, property: property } 
-               print "#{element[:id]} -  #{property.name} " + fill + "\n"
+               total = @@steps
+               #puts "stp: #{step} : comparacion #{property["value"].pretty_inspect()} - #{@string}"
                
-               @@found = @@found + 1
+               #puts "#{@@contador}*100 / #{@@blocks_total} / #{total} -  \n\n\n\n"
+               print "#{@@contador} of #{@@steps} steps, property: "
                
-             end
+               90.times do print " " end
+               print "\r"
+               print "#{@@contador} of #{@@steps} steps, property: #{property.name} \r"
+               
+               if compare(property.value, @string)
+                 
+                 $result << { id: "#{element[:id]}", step: step, property: property } 
+                 print "#{element[:id]} -  #{property.name} " + fill + "\n"
+                 @@found = @@found + 1
+                 
+               end
              
              
-                     
+             end                     
            
            end
          @@contador = @@contador + 1  
