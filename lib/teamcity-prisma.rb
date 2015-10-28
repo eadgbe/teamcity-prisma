@@ -53,46 +53,15 @@ class Core
     
     case arguments[:type]
     when "build_type"
-=begin
       ###########################################################################
       ###
       ###                                B U I L D S 
       ###
       ###########################################################################
-      TeamCity.buildtypes.each do |build|
-        #print build.keys
-        print "\n"
-        #print build["id"]
-        print "\n"
-        #print TeamCity.buildtype(id: build["id"] )
-        #print TeamCity.buildtype(id: "PackageStoreAPI_TestTemplate" ).keys
-        #print TeamCity.buildtype(id: "PackageStoreAPI_TestTemplate" )["template"].pretty_inspect()
-        #print TeamCity.buildtype(id: build["id"] )["vcs-root-entries"].pretty_inspect()
-        
-        #print TeamCity.buildtype(id: build["id"] )["steps"]
-        TeamCity.buildtype(id: build["id"])["steps"]["step"].each do |step|
-          step["properties"]["property"].each do |prop|
-            #print prop["value"]
-            #print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy\n"  
-          end
-          #print step["properties"].keys
-          #print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n"
-          
-        end
-        print "\n\n"
-      end
-      
 
       
-      print "\n\n"
-      #print TeamCity.buildtypes
-      print "\n\n"
       
-      print "BuildTypes: #{TeamCity.buildtypes.count}\n"
-      print "Projects: #{TeamCity.projects.count}\n"
-      #print "VCS Roots: #{TeamCity.vcs_roots.count}\n"
       
-=end
       
       $prisma._find_string
       
