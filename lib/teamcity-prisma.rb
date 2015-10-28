@@ -60,12 +60,20 @@ class Core
       ###########################################################################
 
       
+      case arguments[:mode] 
+      when "search"
+        $prisma._find_string
+        print "Completed BuildType process                                                                                \r\n"
+      when "replace"
+        $prisma._find_string
+        print "Completed BuildType process                                                                                \r\n"
+        
+        $prisma._replace_string(arguments[:site])
+      else
+        puts "search mode not valid"
+      end
       
       
-      
-      $prisma._find_string
-      
-      print "Completed BuildType process                                                                                \r\n"
       
     
       
