@@ -20,6 +20,21 @@ module TeamcityPrisma
     end
     
     
+    def replace_string(site, string, new_string, step_type=nil)
+      @string = string
+      @new_string = new_string
+      @step_type = step_type
+      @operator = "contains"
+      TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{string}", "-o", @operator, "-m", "replace", "-z", "#{step_type}"])
+    end
+    
+    def _replace_string(site)
+      puts "will start replacing"
+      $Replace = TeamcityPrisma::Writer.new(site)
+      $Replace.BuildType()     
+    end
+    
+    
     def _find_string
       
       build_types = Array.new
