@@ -8,6 +8,7 @@ module TeamcityPrisma
         create_found()
         
       when "replace"
+        create_found()
         create_replace()
         create_processed()
       else
@@ -49,8 +50,9 @@ module TeamcityPrisma
         @found.close
         
       when "replace"
+        @found.close
         @replace.close
-        @close.close
+        @processed.close
       else
       end        
     end
