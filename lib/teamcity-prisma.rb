@@ -11,6 +11,7 @@ require './SeleniumDriver.rb'
 require './Project.rb'
 require './VCS.rb'
 require './teamcity-prisma/Files.rb'
+require './RemoteWriter.rb'
 
 module TeamcityPrisma
   

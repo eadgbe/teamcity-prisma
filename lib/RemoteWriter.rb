@@ -1,17 +1,7 @@
 module TeamcityPrisma
   
-  class Writer
-      
-    def BuildType
-      
-      $Writer = TeamcityPrisma::SeleniumDriver.new()
-      $Writer.login_teamcity(@login)
-      #$Writer.replace(@string, @new_string)
-      $Writer.close()
-      
-    end  
-    
-    
+  class RemoteWriter
+
     def initialize(server)
       if server == SITE_DEV
         @url = URL_DEV
@@ -24,6 +14,19 @@ module TeamcityPrisma
       @site = server      
       
     end
+    
+          
+    def BuildType
+      
+      $WebClient = TeamcityPrisma::SeleniumDriver.new()
+      $WebClient.login_teamcity(@login)
+      $WebClient.replace(@string, @new_string, @url)
+      $WebClient.close()
+      
+    end  
+    
+    
+
     
     
   end
