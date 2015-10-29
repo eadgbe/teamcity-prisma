@@ -159,8 +159,8 @@ module TeamcityPrisma
               end
             end
             
-            #$files.write_items({ id: "#{build_type.id}", steps: steps }) if steps.count > 0
-            @@elements << { id: "#{build_type.id}", steps: steps } if steps.count > 0
+            $files.write_items({ build_type_id: "#{build_type.id}", steps: steps }) if steps.count > 0
+            @@elements << { build_type_id: "#{build_type.id}", steps: steps } if steps.count > 0
             @@steps = @@steps + steps.count
           
               
@@ -195,9 +195,9 @@ module TeamcityPrisma
             end
             
                       
-            #$files.write_items( { id: "#{build_type.id}", steps: steps }) if steps.count > 0
+            $files.write_items( { build_type_id: "#{build_type.id}", steps: steps }) if steps.count > 0
             
-            @@elements << { id: "#{build_type.id}", steps: steps } if steps.count > 0
+            @@elements << { build_type_id: "#{build_type.id}", steps: steps } if steps.count > 0
             @@steps = @@steps + steps.count
            
                        
@@ -238,7 +238,7 @@ module TeamcityPrisma
           
            #puts "xxx #{TeamCity.buildtype(id: element[:id])["steps"]["step"][step]["properties"]} \n\n\n"
            
-           TeamCity.buildtype(id: element[:id])["steps"]["step"][step]["properties"]["property"].each do |property| 
+           TeamCity.buildtype(id: element[:build_type_id])["steps"]["step"][step]["properties"]["property"].each do |property| 
            
              if @step_type.nil? or compare(property.name, @step_type)
                
@@ -254,8 +254,9 @@ module TeamcityPrisma
                
                if compare(property.value, @string)
                  
-                 $result << { id: "#{element[:id]}", step: step, property: property } 
-                 print "#{element[:id]} -  #{property.name} " + fill + "\n"
+                 $result << { build_type_id: "#{element[:build_type_id]}", step: step, property: property } 
+                 print "#{element[:build_type_id]} -  #{property.name} " + fill + "\n"
+                 
                  @@found = @@found + 1
                  
                end
