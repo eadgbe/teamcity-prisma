@@ -41,6 +41,7 @@ module TeamcityPrisma
       build_types = TeamCity.buildtypes
       
       puts build_types.count*0.002
+      # 10.0 acceptable by tc1.
       @@blocks_total = 10.0
       @@blocks_total = build_types.size if build_types.size < 5
       blocks = Array.new
@@ -234,37 +235,40 @@ module TeamcityPrisma
                   
          element[:steps].each do |step|
          
-           #puts step
-          
-           #puts "xxx #{TeamCity.buildtype(id: element[:id])["steps"]["step"][step]["properties"]} \n\n\n"
+           if TeamCity.buildtype(id: element[:build_type_id])["steps"]["step"][step]
            
-           TeamCity.buildtype(id: element[:build_type_id])["steps"]["step"][step]["properties"]["property"].each do |property| 
-           
-             if @step_type.nil? or compare(property.name, @step_type)
-               
-               total = @@steps
-               #puts "stp: #{step} : comparacion #{property["value"].pretty_inspect()} - #{@string}"
-               
-               #puts "#{@@contador}*100 / #{@@blocks_total} / #{total} -  \n\n\n\n"
-               print "#{@@contador} of #{@@steps} steps, property: "
-               
-               90.times do print " " end
-               print "\r"
-               print "#{@@contador} of #{@@steps} steps, property: #{property.name} \r"
-               
-               if compare(property.value, @string)
-                 
-                 $result << { build_type_id: "#{element[:build_type_id]}", step: step, property: property } 
-                 print "#{element[:build_type_id]} -  #{property.name} " + fill + "\n"
-                 
-                 @@found = @@found + 1
-                 
-               end
+             TeamCity.buildtype(id: element[:build_type_id])["steps"]["step"][step]["properties"]["property"].each do |property| 
              
+               #if property.name.include?(@step_type)
+               if @step_type.nil? or compare(property.name, @step_type)
+                 
+                 total = @@steps
+    
+                 #puts "stp: #{step} : comparacion #{property["value"].pretty_inspect()} - #{@string}"
+                 
+                 #puts "#{@@contador}*100 / #{@@blocks_total} / #{total} -  \n\n\n\n"
              
-             end                     
+                 print "#{@@contador} of #{@@steps} steps, property: "
+                 
+                 90.times do print " " end
+                 print "\r"
+                 print "#{@@contador} of #{@@steps} steps, property: #{property.name} \r"
+                                 
+                 
+                 if compare(property.value, @string)
+                   
+                   $result << { build_type_id: "#{element[:build_type_id]}", step: step, property: property } 
+                   print "#{element[:build_type_id]} -  #{property.name} " + fill + "\n"
+                   
+                   @@found = @@found + 1
+                   
+                 end              
+               
+               end                     
+             
+             end
            
-           end
+           end 
          @@contador = @@contador + 1  
          
          end
