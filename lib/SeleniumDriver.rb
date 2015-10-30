@@ -18,8 +18,35 @@ module TeamcityPrisma
        @@driver.quit
      end
      
-     def replace(string, new_string)
-       @@driver.navigate.to "http://teamcitydev.dev.xero.com/"
+     def replace(string, new_string, url)
+       
+       $result.each() do |result|
+         result[:property].name
+         runner =  TeamCity.buildtype(id: result[:build_type_id])["steps"]["step"][result[:step]].id
+
+         unless runner.nil? 
+           @@driver.navigate.to "#{url}/admin/editRunType.html?id=buildType:#{result[:build_type_id]}&runnerId=#{runner}"
+         
+           wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+           wait.until { @@driver.find_element(:id, result[:property].name)  }
+           html_element = @@driver.find_element(:id, result[:property].name)
+             
+           
+             
+           #html_element.clear
+           #html_element.send_keys "test"
+         else
+           next
+         end
+       
+       end
+       
+       
+       
+       
+       
+       
+       
      end
      
      
