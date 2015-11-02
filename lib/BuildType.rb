@@ -11,21 +11,23 @@ module TeamcityPrisma
     @@found = 0
     @@steps = 0
     
-    def find_string(site, string, step_type=nil)
+    def find_string(site, string, output, step_type=nil)
       @string = string
       @step_type = step_type
       @operator = "contains"
+      @output = output
       #TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{seconds}", "-o", "#{operator}", "-m", "search"])
-      TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{string}", "-o", @operator, "-m", "search", "-z", "#{step_type}"])
+      TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{string}", "-o", @operator, "-m", "search", "-z", "#{step_type}", "-O", @output])
     end
     
     
-    def replace_string(site, string, new_string, step_type=nil)
+    def replace_string(site, string, new_string, output, step_type=nil)
       @string = string
       @new_string = new_string
+      @output = output
       @step_type = step_type
       @operator = "contains"
-      TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{string}", "-o", @operator, "-m", "replace", "-z", "#{step_type}"])
+      TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{string}", "-o", @operator, "-m", "replace", "-z", "#{step_type}", "-O", @output])
     end
     
     def _replace_string(site)

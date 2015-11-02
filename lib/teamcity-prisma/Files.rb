@@ -1,14 +1,17 @@
 module TeamcityPrisma
   class Files
-    def initialize(mode)
+    def initialize(mode, output)
       @mode = mode
       case @mode
       when "search"
         create_items()
         create_found()
+        create_output(output)
         
       when "replace"
+        create_items()
         create_found()
+        create_output(output)
         create_replace()
         create_processed()
       else
@@ -22,7 +25,6 @@ module TeamcityPrisma
     
     def write_items(content)
       @items.write(content.to_yaml())
-      puts "writing items_file"
     end
     
     def create_found()
@@ -34,6 +36,15 @@ module TeamcityPrisma
       puts "writing found_file"
     end
     
+    def create_output(path)
+      @output = File.open(path, "w")
+    end
+    
+    def write_output(content)
+      @output.write(content.to_yaml())
+      puts "writing output_file"
+    end
+    
     def create_replace()
       @replace = File.open(FILE_REPLACE, "w")
     end
@@ -42,19 +53,36 @@ module TeamcityPrisma
       @processed = File.open(FILE_PROCESSED, "w")
     end
     
-    def close
+    def _delete
   
+      case @mode
+      when "search"
+        File.delete(@items, @found)
+        
+      when "replace"
+        File.delete(@items, @found, @replace, @processed)
+      else
+      end        
+    end
+    
+    def close
+      
       case @mode
       when "search"
         @items.close
         @found.close
-        
+        @output.close
+            
       when "replace"
+        @items.close
         @found.close
         @replace.close
         @processed.close
+        @output.close
       else
-      end        
+      end
+      
+      _delete        
     end
     
   end

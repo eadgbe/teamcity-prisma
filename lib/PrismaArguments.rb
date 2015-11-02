@@ -40,6 +40,12 @@ module TeamcityPrisma
           self[:operator] = string
         end
         
+        opts.on('-O', '--output-file [STRING]',
+                'specify the output file path < FilePath >') do |string|
+          self[:output] = string.gsub("\\", "/")
+            puts self[:output]
+        end
+        
         opts.on('-z', '--step-type [STRING]',
                 'step type when using "--type build_type <step type>", if it is not specified the search will include all steps') do |string|
           self[:step_type] = string
@@ -57,6 +63,7 @@ module TeamcityPrisma
       begin
         raise OptionParser::MissingArgument if self[:mode]=='' or self[:mode].nil?
         raise OptionParser::MissingArgument if self[:operator]=='' or self[:mode].nil?  
+        raise OptionParser::MissingArgument if self[:output]=='' or self[:output].nil?   
         raise OptionParser::MissingArgument if self[:string]=='' or self[:string].nil?
         raise OptionParser::MissingArgument if self[:site]=='' or self[:site].nil?
         raise OptionParser::MissingArgument if self[:type]=='' or self[:type].nil?   

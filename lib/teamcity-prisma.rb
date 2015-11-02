@@ -47,6 +47,7 @@ class Core
     
     
     files = TeamcityPrisma::Files.new(arguments[:mode])
+    $files = TeamcityPrisma::Files.new(arguments[:mode], arguments[:output])
     
     
   
