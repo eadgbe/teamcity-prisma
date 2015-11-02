@@ -31,10 +31,20 @@ module TeamcityPrisma
            wait.until { @@driver.find_element(:id, result[:property].name)  }
            html_element = @@driver.find_element(:id, result[:property].name)
              
+           #value = html_element.text
+           value = result[:property].value
+           value = value.gsub(/#{string}/, new_string)
+           html_element.clear
+           html_element.send_keys value
            
-             
-           #html_element.clear
-           #html_element.send_keys "test"
+           
+           @@driver.find_element(:name, 'submitButton').click
+           
+           wait = Selenium::WebDriver::Wait.new(:timeout => 20) # seconds
+           wait.until {
+             @@driver.find_element(:id, 'unprocessed_buildRunnerSettingsUpdated')
+           }
+           
          else
            next
          end
