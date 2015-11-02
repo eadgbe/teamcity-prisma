@@ -31,7 +31,7 @@ module TeamcityPrisma
     def _replace_string(site)
       puts "will start replacing"
       $Replace = TeamcityPrisma::RemoteWriter.new(site)
-      $Replace.BuildType()     
+      $Replace.BuildType(@string, @new_string)     
     end
     
     
