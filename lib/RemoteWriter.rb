@@ -26,12 +26,12 @@ module TeamcityPrisma
     end
     
           
-    def BuildType
+    def BuildType(string, new_string)
       
-      $WebClient = TeamcityPrisma::SeleniumDriver.new()
-      $WebClient.login_teamcity(@login)
-      $WebClient.replace(@string, @new_string, @url)
-      $WebClient.close()
+      $seleniumDriver = TeamcityPrisma::SeleniumDriver.new()
+      $seleniumDriver.login_teamcity(@login)
+      $seleniumDriver.replace(string, new_string, @url)
+      $seleniumDriver.close()
       
     end  
     
