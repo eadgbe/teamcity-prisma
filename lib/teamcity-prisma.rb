@@ -71,6 +71,10 @@ class Core
         print "Completed BuildType process                                                                                \r\n"
         
         $prisma._replace_string(arguments[:site])
+      when "modify"
+        $prisma._find_string
+        print "                                                                                \r\n"
+        $prisma._replace_string(arguments[:site], "listbox")
       else
         puts "search mode not valid"
       end
