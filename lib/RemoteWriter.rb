@@ -26,18 +26,14 @@ module TeamcityPrisma
     end
     
           
-    def BuildType(string, new_string)
+    def Replace(string, new_string, listbox=nil)
       
       $seleniumDriver = TeamcityPrisma::SeleniumDriver.new()
       $seleniumDriver.login_teamcity(@login)
-      $seleniumDriver.replace(string, new_string, @url)
+      $seleniumDriver.replace(string, new_string, @url, listbox)
       $seleniumDriver.close()
       
-    end  
-    
-    
-
-    
+    end     
     
   end
 
