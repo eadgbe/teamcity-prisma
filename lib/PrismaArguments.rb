@@ -62,7 +62,7 @@ module TeamcityPrisma
       #check for required arguments
       begin
         raise OptionParser::MissingArgument if self[:mode]=='' or self[:mode].nil?
-        raise OptionParser::MissingArgument if self[:operator]=='' or self[:mode].nil?  
+        raise OptionParser::MissingArgument if self[:operator]=='' or self[:operator].nil?
         raise OptionParser::MissingArgument if self[:output]=='' or self[:output].nil?   
         raise OptionParser::MissingArgument if self[:string]=='' or self[:string].nil?
         raise OptionParser::MissingArgument if self[:site]=='' or self[:site].nil?
@@ -75,7 +75,7 @@ module TeamcityPrisma
       
       #check for arguments syntax
       begin
-        raise OptionParser::InvalidArgument unless /#{self[:mode]}/.match('search|replace')
+        raise OptionParser::InvalidArgument unless /#{self[:mode]}/.match('search|replace|modify')
         raise OptionParser::InvalidArgument unless /#{self[:site]}/.match('dev|tc1|tc2|tc3')
         raise OptionParser::InvalidArgument unless /#{self[:operator]}/.match('minor_than|greater_than|equal|contains')
         raise OptionParser::InvalidArgument unless /#{self[:type]}/.match('vcs_root|build_type|project')
