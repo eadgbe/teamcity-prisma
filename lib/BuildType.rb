@@ -30,12 +30,20 @@ module TeamcityPrisma
       TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{string}", "-o", @operator, "-m", "replace", "-z", "#{step_type}", "-O", @output])
     end
     
-    def _replace_string(site)
-      puts "will start replacing"
-      $Replace = TeamcityPrisma::RemoteWriter.new(site)
-      $Replace.BuildType(@string, @new_string)     
+    def modify_listbox(site, string, new_string, output, step_type=nil)
+      @string = string
+      @new_string = new_string
+      @output = output
+      @step_type = step_type
+      @operator = "contains"
+      TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{string}", "-o", @operator, "-m", "modify", "-z", "#{step_type}", "-O", @output])
     end
     
+    def _replace_string(site, listbox=nil)
+      puts "will start replacing"
+      $WebInterface = TeamcityPrisma::RemoteWriter.new(site)
+      $WebInterface.Replace(@string, @new_string, listbox)     
+    end  
     
     def _find_string
       
