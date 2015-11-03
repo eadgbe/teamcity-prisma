@@ -18,7 +18,7 @@ module TeamcityPrisma
        @@driver.quit
      end
      
-     def replace(string, new_string, url)
+     def replace(string, new_string, url, listbox = nil)
        
        $result.each() do |result|
          result[:property].name
@@ -37,6 +37,24 @@ module TeamcityPrisma
            html_element.clear
            html_element.send_keys value
            
+             if !listbox.nil? and listbox.include?("listbox")                            
+               begin
+                 wait.until {@@driver.find_element(:name, 'prop:'+result[:property].name)}
+                 html_element = @@driver.find_element(:name, 'prop:'+result[:property].name)
+                 html_element.send_keys value
+               rescue
+               end
+               
+             else
+               begin
+                   
+                 wait.until {@@driver.find_element(:id, result[:property].name)}
+                 html_element = @@driver.find_element(:id, result[:property].name)
+                 html_element.clear  
+                 html_element.send_keys value
+               rescue
+               end
+             end           
            
            @@driver.find_element(:name, 'submitButton').click
            
