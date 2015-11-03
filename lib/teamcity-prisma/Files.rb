@@ -8,13 +8,14 @@ module TeamcityPrisma
         create_found()
         create_output(output)
         
-      when "replace"
+      else       
+
         create_items()
         create_found()
         create_output(output)
         create_replace()
         create_processed()
-      else
+
       end      
     end
     
@@ -58,10 +59,9 @@ module TeamcityPrisma
       case @mode
       when "search"
         File.delete(@items, @found)
-        
-      when "replace"
-        File.delete(@items, @found, @replace, @processed)
+
       else
+        File.delete(@items, @found, @replace, @processed)
       end        
     end
     
@@ -72,14 +72,14 @@ module TeamcityPrisma
         @items.close
         @found.close
         @output.close
-            
-      when "replace"
+
+
+      else
         @items.close
         @found.close
         @replace.close
         @processed.close
         @output.close
-      else
       end
       
       _delete        
