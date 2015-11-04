@@ -12,11 +12,13 @@ module TeamcityPrisma
     #end
     
     
-    def find_custom_period(site, seconds, operator)
-      puts "seconds: #{seconds}    -     operator: #{operator}"
-      @string = seconds
-      @operator = operator
-      TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{seconds}", "-o", "#{operator}", "-m", "search"])
+    def find_custom_period(parameters)
+      config = parameters[1]
+      site = parameters[2]
+      @string = parameters[3]
+      @operator = parameters[4]
+      @output = parameters[5]
+      TeamcityPrisma::Prisma.new.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", "#{@operator}", "-m", "search", "-O", @output, "-c", config])
     end
     
     
