@@ -50,7 +50,9 @@ class Core
     $files = TeamcityPrisma::Files.new(arguments[:mode], arguments[:output])
     
     
+    require arguments[:config]
     require File.join(File.dirname(__FILE__), 'RubyClient.rb')
+    TeamcityPrisma::RubyClient.new().ConfigTeamcityAPI()
   
     
     
