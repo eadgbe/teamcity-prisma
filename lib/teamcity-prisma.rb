@@ -2,16 +2,16 @@ require 'teamcity'
 require "selenium-webdriver"
 require "pp"
 require "yaml"
-require './teamcity-prisma/constants/constants.rb'
-require './teamcity-prisma/constants/secret_constants.rb'
-require './PrismaArguments.rb'
-require './BuildType.rb'
-require './RubyClient.rb'
-require './SeleniumDriver.rb'
-require './Project.rb'
-require './VCS.rb'
-require './teamcity-prisma/Files.rb'
-require './RemoteWriter.rb'
+require File.join(File.dirname(__FILE__), 'teamcity-prisma', 'constants/constants.rb')
+#require File.join(File.dirname(__FILE__), 'teamcity-prisma/constants/secret_constants.rb')
+require File.join(File.dirname(__FILE__), 'PrismaArguments.rb')
+require File.join(File.dirname(__FILE__), 'BuildType.rb')
+require File.join(File.dirname(__FILE__), 'Prisma.rb')
+require File.join(File.dirname(__FILE__), 'SeleniumDriver.rb')
+require File.join(File.dirname(__FILE__), 'Project.rb')
+require File.join(File.dirname(__FILE__), 'VCS.rb')
+require File.join(File.dirname(__FILE__), 'teamcity-prisma/Files.rb')
+require File.join(File.dirname(__FILE__), 'RemoteWriter.rb')
 
 module TeamcityPrisma
   
@@ -50,6 +50,7 @@ class Core
     $files = TeamcityPrisma::Files.new(arguments[:mode], arguments[:output])
     
     
+    require File.join(File.dirname(__FILE__), 'RubyClient.rb')
   
     
     
