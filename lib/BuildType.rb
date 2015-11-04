@@ -11,32 +11,39 @@ module TeamcityPrisma
     @@found = 0
     @@steps = 0
     
-    def find_string(site, string, output, step_type=nil)
-      @string = string
-      @step_type = step_type
+    def find_string(parameters)
+      config = parameters[1]
+      site = parameters[2]
+      @string = parameters[3]
+      @output = parameters[4]
+      @step_type = nil or parameters[5]
       @operator = "contains"
-      @output = output
+      
       #TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{seconds}", "-o", "#{operator}", "-m", "search"])
-      TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{string}", "-o", @operator, "-m", "search", "-z", "#{step_type}", "-O", @output])
+      TeamcityPrisma::Prisma.new.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", @operator, "-m", "search", "-z", "#{@step_type}", "-O", @output, "-c", config])
     end
     
     
-    def replace_string(site, string, new_string, output, step_type=nil)
-      @string = string
-      @new_string = new_string
-      @output = output
-      @step_type = step_type
+    def replace_string(parameters)
+      config = parameters[1]
+      site = parameters[2]
+      @string = parameters[3]
+      @new_string = parameters[4]
+      @output = parameters[5]
+      @step_type = nil or parameters[6]
       @operator = "contains"
-      TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{string}", "-o", @operator, "-m", "replace", "-z", "#{step_type}", "-O", @output])
+      TeamcityPrisma::Prisma.new.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", @operator, "-m", "replace", "-z", "#{@step_type}", "-O", @output, "-c", config])
     end
     
-    def modify_listbox(site, string, new_string, output, step_type=nil)
-      @string = string
-      @new_string = new_string
-      @output = output
-      @step_type = step_type
+    def modify_listbox(parameters)
+      config = parameters[1]
+      site = parameters[2]
+      @string = parameters[3]
+      @new_string = parameters[4]
+      @output = parameters[5]
+      @step_type = nil or parameters[6]
       @operator = "contains"
-      TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{string}", "-o", @operator, "-m", "modify", "-z", "#{step_type}", "-O", @output])
+      TeamcityPrisma::Prisma.new.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", @operator, "-m", "modify", "-z", "#{@step_type}", "-O", @output, "-c", config])
     end
     
     def _replace_string(site, listbox=nil)
