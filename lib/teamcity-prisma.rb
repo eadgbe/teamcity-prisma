@@ -23,6 +23,28 @@ class Core
   
   def initialize(parameters)
     puts "log: parameters #{parameters}"
+    case parameters[0]
+    when "property_search"
+       $prisma = TeamcityPrisma::BuildType.new
+       $prisma.find_string(parameters)
+       
+    when "property_replace"
+       $prisma = TeamcityPrisma::BuildType.new
+       $prisma.replace_string(parameters)
+    when "property_modify"
+       $prisma = TeamcityPrisma::BuildType.new
+       $prisma.modify_listbox(parameters)
+    when "vcsroot_find"
+       $prisma = TeamcityPrisma::VCS.new
+       $prisma.find_custom_period(parameters)
+    else
+      puts "Type parameter doesn't match any valid option"  
+    end
+  end
+  
+  def process(parameters)
+    
+    
     #arguments = TeamcityPrisma::PrismaArguments.new(ARGV)
     arguments = TeamcityPrisma::PrismaArguments.new(parameters)
     
