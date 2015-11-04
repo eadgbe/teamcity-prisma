@@ -46,6 +46,11 @@ module TeamcityPrisma
             puts self[:output]
         end
         
+        opts.on('-c', '--config [STRING]',
+                'specify the input config file path < FilePath >') do |string|
+          self[:config] = string.gsub("\\", "/")
+        end
+        
         opts.on('-z', '--step-type [STRING]',
                 'step type when using "--type build_type <step type>", if it is not specified the search will include all steps') do |string|
           self[:step_type] = string
@@ -64,6 +69,7 @@ module TeamcityPrisma
         raise OptionParser::MissingArgument if self[:mode]=='' or self[:mode].nil?
         raise OptionParser::MissingArgument if self[:operator]=='' or self[:operator].nil?
         raise OptionParser::MissingArgument if self[:output]=='' or self[:output].nil?   
+        raise OptionParser::MissingArgument if self[:config]=='' or self[:config].nil?   
         raise OptionParser::MissingArgument if self[:string]=='' or self[:string].nil?
         raise OptionParser::MissingArgument if self[:site]=='' or self[:site].nil?
         raise OptionParser::MissingArgument if self[:type]=='' or self[:type].nil?   
