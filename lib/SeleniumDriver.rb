@@ -86,18 +86,7 @@ module TeamcityPrisma
          @@driver.find_element(:id, 'unprocessed_buildRunnerSettingsUpdated')
        }
      end
-     
-     def find_element(name, element)
-       
-       @@driver.find_element(name, element)
-       
-     end
-     
-     
-     def send_keys
-       @@html_element.send_keys property_value
-     end
-     
+      
      
     def login_teamcity(url, username=nil, password=nil)
       @@driver.navigate.to url
