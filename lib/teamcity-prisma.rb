@@ -98,7 +98,9 @@ class Core
       when "modify"
         $prisma._find_string
         print "                                                                                \r\n"
-        $prisma._replace_string(arguments[:site], "listbox")
+        if $result.count() > 0
+          $prisma._replace_string(arguments[:site], "listbox")
+        end
       else
         puts "search mode not valid"
       end
