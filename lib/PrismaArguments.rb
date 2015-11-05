@@ -68,7 +68,7 @@ module TeamcityPrisma
       begin
         raise OptionParser::MissingArgument if self[:mode]=='' or self[:mode].nil?
         raise OptionParser::MissingArgument if self[:operator]=='' or self[:operator].nil?
-        raise OptionParser::MissingArgument if self[:output]=='' or self[:output].nil?   
+        raise OptionParser::MissingArgument if self[:output]=='' or self[:output].nil?
         raise OptionParser::MissingArgument if self[:config]=='' or self[:config].nil?   
         raise OptionParser::MissingArgument if self[:string]=='' or self[:string].nil?
         raise OptionParser::MissingArgument if self[:site]=='' or self[:site].nil?
