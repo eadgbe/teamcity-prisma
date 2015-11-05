@@ -54,7 +54,6 @@ class Core
     #puts $site
   
   
-    TeamcityPrisma::RubyClient.new().ConfigTeamcityAPI()
     #TeamcityPrisma::SeleniumDriver.new().Driver()
   
     #TeamcityPrisma::Project.new().Query()
