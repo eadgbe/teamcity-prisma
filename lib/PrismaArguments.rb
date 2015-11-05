@@ -11,12 +11,12 @@ module TeamcityPrisma
       opts = OptionParser.new do |opts|
         opts.banner = "Usage: #$0 [options]"
         opts.on('-s', '--search-string [STRING]',
-                'search [STRING]') do |string|
+                'search <STRING>') do |string|
           self[:string] = string
         end
         
         opts.on('-m', '--mode [STRING]',
-                'mode of use [ search | replace ]') do |string|
+                'mode of use < search | replace >') do |string|
           self[:mode] = string
         end
         
@@ -31,12 +31,12 @@ module TeamcityPrisma
         end
         
         opts.on('-t', '--type [STRING]',
-                'type of object [ vcs_root | build_type | project ]') do |string|
+                'type of object < vcs_root | build_type | project >') do |string|
           self[:type] = string
         end
 
         opts.on('-o', '--operator-search [STRING]',
-                'search operator [ minor_than | greater_than | equals | contains ]') do |string|
+                'search operator < minor_than | greater_than | equals | contains >') do |string|
           self[:operator] = string
         end
         
