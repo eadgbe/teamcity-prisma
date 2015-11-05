@@ -34,8 +34,7 @@ module TeamcityPrisma
            #value = html_element.text
            value = result[:property].value
            value = value.gsub(/#{string}/, new_string)
-           html_element.clear
-           html_element.send_keys value
+
            
              if !listbox.nil? and listbox.include?("listbox")                            
                begin
