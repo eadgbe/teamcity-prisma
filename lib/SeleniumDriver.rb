@@ -91,14 +91,18 @@ module TeamcityPrisma
     def login_teamcity(url, username=nil, password=nil)
       @@driver.navigate.to url
       begin
-        if find_element('name', 'username')
-          html_element = find_element('name', 'username')
-          html_element.send_keys USER_TC1
-          pass = find_element('name', 'password')
-          pass.send_keys PASS_TC1
-          html_element.submit
-        end
-      rescue       
+        wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+        wait.until {@@driver.find_element('id', 'headerSearchField')}
+      
+      rescue 
+        wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+        wait.until {@@driver.find_element('name', 'username')}
+        html_element = @@driver.find_element('name', 'username')
+
+        html_element.send_keys USER_TC1
+        pass = @@driver.find_element('name', 'password')
+        pass.send_keys PASS_TC1
+        html_element.submit      
       end
       
     end 
