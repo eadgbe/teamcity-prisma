@@ -89,22 +89,18 @@ module TeamcityPrisma
 #=begin
       
         
-        @@blocks_total = @@elements.size if @@elements.size < 5
-        threads = []
-        blocks = Array.new
-        blocks = @@elements.each_slice( (@@elements.size/@@blocks_total).round ).to_a
-           
+      @@blocks_total = @@elements.size if @@elements.size < 5
+      threads = []
+      blocks = Array.new
+      blocks = @@elements.each_slice( (@@elements.size/@@blocks_total).round ).to_a          
 
-        blocks.each do |block|        
-          threads << Thread.new do
+      blocks.each do |block|        
+        threads << Thread.new do
                      _get_properties(block)  
                    end               
-        end  
+      end  
             
-        ThreadsWait.all_waits(threads)
-              
-        
-   
+      ThreadsWait.all_waits(threads)
       
       puts "\n\nTotal found: #{@@found}"      
       $result.flatten!()            
@@ -300,14 +296,7 @@ module TeamcityPrisma
 
  
    end
-    
-    
-    
-    
-    
- 
-    
-    
+
     
     
   def compare(x,y)
@@ -337,9 +326,7 @@ module TeamcityPrisma
       print "\r"
       print "#{counter*100/blocks_total.round/total}%#{9.chr}#{message}: #{message} \r"
     end
-    
-    
-    
+
     
   end
 
