@@ -200,11 +200,13 @@ module TeamcityPrisma
             
             steps = Array.new
             
-           
-            TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].each do |step|
-              if !steps_template.include?(step.id)
-                steps << counter
-                counter = counter + 1
+            
+            unless TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].nil?
+              TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].each do |step|
+                if !steps_template.include?(step.id)
+                  steps << counter
+                  counter = counter + 1
+                end
               end
             end
             
