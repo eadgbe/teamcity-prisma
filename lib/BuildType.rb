@@ -30,7 +30,7 @@ module TeamcityPrisma
       @string = parameters[3]
       @new_string = parameters[4]
       @output = parameters[5]
-      @step_type = nil or parameters[6]
+      @step_type = parameters[6] or nil
       @operator = "contains"
       TeamcityPrisma::Prisma.new.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", @operator, "-m", "replace", "-z", "#{@step_type}", "-O", @output, "-c", config])
     end
@@ -41,7 +41,7 @@ module TeamcityPrisma
       @string = parameters[3]
       @new_string = parameters[4]
       @output = parameters[5]
-      @step_type = nil or parameters[6]
+      @step_type = parameters[6] or nil 
       @operator = "contains"
       TeamcityPrisma::Prisma.new.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", @operator, "-m", "modify", "-z", "#{@step_type}", "-O", @output, "-c", config])
     end
