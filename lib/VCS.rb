@@ -3,8 +3,7 @@ require 'thwait'
 module TeamcityPrisma
   class VCS
     @@params = ["-t", "vcs_root"]
-    @@elements = Array.new
-    $result = Array.new
+    @@elements = Array.new    
     @@counter = 0
     @@contador = 0
     #def initialize
@@ -13,6 +12,7 @@ module TeamcityPrisma
     
     
     def find_custom_period(parameters)
+      $result = Array.new
       config = parameters[1]
       site = parameters[2]
       @string = parameters[3]

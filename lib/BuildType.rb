@@ -4,14 +4,14 @@ module TeamcityPrisma
     
     Thread.abort_on_exception=true
     @@params = ["-t", "build_type"]
-    $result = Array.new
-    @@elements = Array.new
     @@counter = 0
     @@contador = 0
     @@found = 0
     @@steps = 0
     
     def find_string(parameters)
+      $result = Array.new
+      @@elements = Array.new
       config = parameters[1]
       site = parameters[2]
       @string = parameters[3]
@@ -25,6 +25,8 @@ module TeamcityPrisma
     
     
     def replace_string(parameters)
+      $result = Array.new
+      @@elements = Array.new
       config = parameters[1]
       site = parameters[2]
       @string = parameters[3]
@@ -36,6 +38,8 @@ module TeamcityPrisma
     end
     
     def modify_listbox(parameters)
+      $result = Array.new
+      @@elements = Array.new
       config = parameters[1]
       site = parameters[2]
       @string = parameters[3]
