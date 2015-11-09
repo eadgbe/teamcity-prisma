@@ -59,9 +59,16 @@ module TeamcityPrisma
       case @mode
       when "search"
         File.delete(@items, @found)
+        @items = nil
+        @found = nil
 
       else
         File.delete(@items, @found, @replace, @processed)
+        @items = nil
+        @found = nil
+        @replace = nil
+        @processed = nil
+        @output = nil
       end        
     end
     
@@ -72,6 +79,7 @@ module TeamcityPrisma
         @items.close
         @found.close
         @output.close
+        @output = nil
 
 
       else
