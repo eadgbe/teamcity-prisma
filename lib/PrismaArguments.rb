@@ -56,6 +56,11 @@ module TeamcityPrisma
           self[:step_type] = string
         end
         
+        opts.on('-b', '--buildtype-id [STRING]',
+                'BuildType ID when using --mode "modify", if it is not specified the search will include all builds') do |string|
+          self[:buildtype_id] = string
+        end
+        
         opts.on_tail('-h', '--help', 'display this help and exit') do
           puts opts
           exit

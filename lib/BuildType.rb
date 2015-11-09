@@ -16,7 +16,7 @@ module TeamcityPrisma
       site = parameters[2]
       @string = parameters[3]
       @output = parameters[4]
-      @step_type = nil or parameters[5]
+      @step_type = parameters[5] or nil
       @operator = "contains"
       
       #TeamcityPrisma::Core.new(@@params + ["-S", "#{site}", "-s", "#{seconds}", "-o", "#{operator}", "-m", "search"])
@@ -46,14 +46,15 @@ module TeamcityPrisma
       @new_string = parameters[4]
       @output = parameters[5]
       @step_type = parameters[6] or nil 
+      @buildtype_id = parameters[7] or nil
       @operator = "contains"
-      TeamcityPrisma::Prisma.new.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", @operator, "-m", "modify", "-z", "#{@step_type}", "-O", @output, "-c", config])
+      TeamcityPrisma::Prisma.new.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", @operator, "-m", "modify", "-z", "#{@step_type}", "-O", @output, "-c", config, "-b", @buildtype_id])
     end
     
-    def _replace_string(site, listbox=nil)
       puts "will start replacing"
+    def _replace_string(site, listbox=nil, buildtypeid=nil)
       $WebInterface = TeamcityPrisma::RemoteWriter.new(site)
-      $WebInterface.Replace(@string, @new_string, listbox)     
+      $WebInterface.Replace(@string, @new_string, listbox, buildtypeid)     
     end  
     
     def _find_string

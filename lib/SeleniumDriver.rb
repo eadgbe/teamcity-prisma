@@ -18,11 +18,17 @@ module TeamcityPrisma
        @@driver.quit
      end
      
-     def replace(string, new_string, url, listbox = nil)
+     def replace(string, new_string, url, listbox = nil, buildtypeid=nil)
        
        $result.each() do |result|
          result[:property].name
          runner =  TeamCity.buildtype(id: result[:build_type_id])["steps"]["step"][result[:step]].id
+           
+         unless buildtypeid.nil? 
+           unless result[:build_type_id].include?(buildtypeid)
+             next
+           end
+         end
 
          unless runner.nil? 
            @@driver.navigate.to "#{url}/admin/editRunType.html?id=buildType:#{result[:build_type_id]}&runnerId=#{runner}"
