@@ -77,17 +77,24 @@ module TeamcityPrisma
       case @mode
       when "search"
         @items.close
+        
         @found.close
+        
         @output.close
         @output = nil
 
 
       else
         @items.close
+        
         @found.close
+        
         @replace.close
+        
         @processed.close
+        
         @output.close
+        
       end
       
       _delete        

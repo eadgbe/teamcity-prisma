@@ -2,15 +2,12 @@
 module TeamcityPrisma
   class SeleniumDriver
     
-    
-
-    
      def initialize()
      
         @@client = Selenium::WebDriver::Remote::Http::Default.new
         @@client.timeout = 240 # seconds
         @@driver = Selenium::WebDriver.for(:firefox, :http_client => @@client)
-        @@driver.manage.timeouts.implicit_wait = 60 # seconds
+        @@driver.manage.timeouts.implicit_wait = 10 # seconds
                
      end
      
@@ -32,12 +29,9 @@ module TeamcityPrisma
 
          unless runner.nil? 
            @@driver.navigate.to "#{url}/admin/editRunType.html?id=buildType:#{result[:build_type_id]}&runnerId=#{runner}"
-         
-           wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
-           wait.until { @@driver.find_element(:id, result[:property].name)  }
-           html_element = @@driver.find_element(:id, result[:property].name)
+                    
+           wait = Selenium::WebDriver::Wait.new(:timeout => 20) # seconds          
              
-           #value = html_element.text
            value = result[:property].value
            value = value.gsub(/#{string}/, new_string)
 
@@ -61,37 +55,16 @@ module TeamcityPrisma
                end
              end           
            
-           @@driver.find_element(:name, 'submitButton').click
+           wait.until {@@driver.find_element(:name, 'save')}
+           @@driver.find_element(:name, 'save').click
            
-           wait = Selenium::WebDriver::Wait.new(:timeout => 20) # seconds
-           wait.until {
-             @@driver.find_element(:id, 'unprocessed_buildRunnerSettingsUpdated')
-           }
+           wait.until {@@driver.find_element(:id, 'unprocessed_buildRunnerSettingsUpdated')}          
            
          else
            next
-         end
-       
-       end
-       
-       
-       
-       
-       
-       
-       
+         end      
+       end               
      end
-     
-     
-     def submit
-       @@driver.find_element(:name, 'submitButton').click
-
-       wait = Selenium::WebDriver::Wait.new(:timeout => 20) # seconds
-       wait.until {
-         @@driver.find_element(:id, 'unprocessed_buildRunnerSettingsUpdated')
-       }
-     end
-      
      
     def login_teamcity(url, username=nil, password=nil)
       @@driver.navigate.to url

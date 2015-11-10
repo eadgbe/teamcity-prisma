@@ -12,8 +12,6 @@ module TeamcityPrisma
   SITE_TC2 = "tc2"
   SITE_TC3 = "tc3"
   
-  SOURCE = "found" # temp
-  
   FILE_FOUND = "found.txt"
   FILE_REPLACE = "replace.txt"
   FILE_PROCESSED = "processed.txt"

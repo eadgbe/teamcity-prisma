@@ -43,7 +43,6 @@ module TeamcityPrisma
         opts.on('-O', '--output-file [STRING]',
                 'specify the output file path < FilePath >') do |string|
           self[:output] = string.gsub("\\", "/")
-            puts self[:output]
         end
         
         opts.on('-c', '--config [STRING]',
