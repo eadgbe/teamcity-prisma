@@ -1,9 +1,6 @@
 module TeamcityPrisma
-  
   class RemoteWriter
-
-    def initialize(server)
-      
+    def initialize(server)  
       case server 
       when SITE_DEV
         @url = URL_DEV
@@ -19,22 +16,15 @@ module TeamcityPrisma
         @login = LOGIN_TC3
       else 
         puts "The Site has not been spec."
-      end      
-            
+      end                
       @site = server      
-      
-    end
-    
+    end  
           
-    def Replace(string, new_string, listbox=nil, buildtypeid=nil)
-      
+    def Replace(string, new_string, listbox=nil, buildtypeid=nil)   
       $seleniumDriver = TeamcityPrisma::SeleniumDriver.new()
       $seleniumDriver.login_teamcity(@login)
       $seleniumDriver.replace(string, new_string, @url, listbox, buildtypeid)
-      $seleniumDriver.close()
-      
-    end     
-    
+      $seleniumDriver.close() 
+    end      
   end
-
 end

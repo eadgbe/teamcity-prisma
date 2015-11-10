@@ -1,6 +1,3 @@
-require './teamcity-prisma/constants/constants.rb'
-require './teamcity-prisma/constants/secret_constants.rb'
-
 module TeamcityPrisma
   class RubyClient
 
@@ -34,14 +31,6 @@ module TeamcityPrisma
           puts "The Site has not been spec."
         end
       end
-      
-=begin      
-        @@client = Selenium::WebDriver::Remote::Http::Default.new
-        @@client.timeout = 240 # seconds
-        @@driver = Selenium::WebDriver.for(:firefox, :http_client => @@client)
-        @@driver.manage.timeouts.implicit_wait = 60 # seconds
-=end
-      
     end
   end
 end
