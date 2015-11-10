@@ -1,0 +1,6 @@
+---
+- :build_type_id: PackageStoreAPI_TestTemplate
+  :step: 2
+  :property: !ruby/hash:Hashie::Mash
+    name: script.content
+    value: ! "#2 \nbundle iinstall --path=\"%bundle_path%\"\n#"

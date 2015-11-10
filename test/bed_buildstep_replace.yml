@@ -1,0 +1,6 @@
+---
+- :build_type_id: PackageStoreAPI_TestTemplate
+  :step: 3
+  :property: !ruby/hash:Hashie::Mash
+    name: script.content
+    value: ! "#3 \nbundle test_buildstep_replace_modified --path=\"%bundle_path%\""

@@ -1,0 +1,5 @@
+---
+- !ruby/hash:Hashie::Mash
+  id: PackageStoreAPI_Features
+  name: development
+  href: /httpAuth/app/rest/vcs-roots/id:PackageStoreAPI_Features

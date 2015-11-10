@@ -1,0 +1,6 @@
+---
+- :build_type_id: PackageStoreAPI_TestTemplate
+  :step: 1
+  :property: !ruby/hash:Hashie::Mash
+    name: jetbrains_powershell_execution
+    value: STDIN
