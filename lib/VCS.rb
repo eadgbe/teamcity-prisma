@@ -3,17 +3,27 @@ require 'thwait'
 module TeamcityPrisma
   class VCS
     @@params = ["-t", "vcs_root"]
-    
-    def find_custom_period(parameters)
+      
+    def initialize
       @@elements = Array.new    
       $result = Array.new
+    end
+    
+    def find_custom_period(parameters)
       config = parameters[1]
       site = parameters[2]
       @string = parameters[3]
       @operator = parameters[4]
       @output = parameters[5]
-      TeamcityPrisma::Prisma.new.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", "#{@operator}", "-m", "search", "-O", @output, "-c", config])
+      prisma = TeamcityPrisma::Prisma.new
+      prisma.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", "#{@operator}", "-m", "search", "-O", @output, "-c", config])
+      _find_custom_period
+      prisma.close_files()
+      print "Completed                                                                                         \r\n" 
     end
+    
+    
+    private
     
     def _find_custom_period
       vcs_roots = Array.new

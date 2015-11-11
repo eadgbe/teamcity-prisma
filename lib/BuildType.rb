@@ -2,40 +2,54 @@ module TeamcityPrisma
   
   class BuildType   
     Thread.abort_on_exception=true
-    @@params = ["-t", "build_type"]
-    
-    def find_string(parameters)
+    @@params = ['-t', 'build_type']
+      
+    def initialize
       $result = Array.new
       @@elements = Array.new
       @@steps = 0
+    end
+      
+    
+    def find_string(parameters)
+      
       config = parameters[1]
       site = parameters[2]
       @string = parameters[3]
       @output = parameters[4]
       @step_type = parameters[5] or nil
-      @operator = "contains"
-      TeamcityPrisma::Prisma.new.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", @operator, "-m", "search", "-z", "#{@step_type}", "-O", @output, "-c", config])
+      @operator = 'contains'
+      prisma = TeamcityPrisma::Prisma.new
+      prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', @operator, '-m', 'search', '-z', "#{@step_type}", '-O', @output, '-c', config])
+      _find_string
+      print "                                                                                \r\n"
+      prisma.close_files()
+      
     end
     
     
     def replace_string(parameters)
-      $result = Array.new
-      @@elements = Array.new
-      @@steps = 0
       config = parameters[1]
       site = parameters[2]
       @string = parameters[3]
       @new_string = parameters[4]
       @output = parameters[5]
       @step_type = parameters[6] or nil
-      @operator = "contains"
-      TeamcityPrisma::Prisma.new.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", @operator, "-m", "replace", "-z", "#{@step_type}", "-O", @output, "-c", config])
+      @operator = 'contains'
+      prisma = TeamcityPrisma::Prisma.new
+      prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', @operator, '-m', 'replace', '-z', "#{@step_type}", '-O', @output, '-c', config])
+        
+      _find_string
+      print "                                                                                \r\n"  
+      if $result.count() > 0
+        _replace_string(site)
+      end      
+        
+      prisma.close_files()
+        
     end
     
     def modify_listbox(parameters)
-      $result = Array.new
-      @@elements = Array.new
-      @@steps = 0
       config = parameters[1]
       site = parameters[2]
       @string = parameters[3]
@@ -43,14 +57,23 @@ module TeamcityPrisma
       @output = parameters[5]
       @step_type = parameters[6] or nil 
       @buildtype_id = parameters[7] or nil
-      @operator = "contains"
-      TeamcityPrisma::Prisma.new.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", @operator, "-m", "modify", "-z", "#{@step_type}", "-O", @output, "-c", config, "-b", @buildtype_id])
+      @operator = 'contains'
+      prisma = TeamcityPrisma::Prisma.new
+      prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', @operator, '-m', 'modify', '-z', "#{@step_type}", '-O', @output, '-c', config, '-b', @buildtype_id])
+      _find_string
+      print "                                                                                \r\n"
+      if $result.count() > 0
+        _replace_string(site, 'listbox', @buildtype_id)
+      end
+      prisma.close_files()
     end
     
     def _replace_string(site, listbox=nil, buildtypeid=nil)
       $WebInterface = TeamcityPrisma::RemoteWriter.new(site)
       $WebInterface.Replace(@string, @new_string, listbox, buildtypeid)     
     end  
+    
+    private 
     
     def _find_string    
       build_types = Array.new
@@ -89,11 +112,11 @@ module TeamcityPrisma
 
       counter = 0
       total = builds.count
-      fill = " "
-      129.times do fill = fill + " " end
+      fill = ' '
+      129.times do fill = fill + ' ' end
       builds.each do |build_type|
         print "#{counter*100/@@blocks_total.round/total}%#{9.chr}template?: "
-              80.times do print " " end
+              80.times do print ' ' end
               print "\r"
               print "#{counter*100/@@blocks_total.round/total}%#{9.chr}template?: #{build_type.id} \r"
 
@@ -101,11 +124,11 @@ module TeamcityPrisma
         unless TeamCity.buildtype(id: "#{build_type.id}").nil?      
             
           #Collect all the steps of builds that are not based on Templates.             
-          if TeamCity.buildtype(id: "#{build_type.id}")["template"].nil?                 
+          if TeamCity.buildtype(id: "#{build_type.id}")['template'].nil?                 
             steps = Array.new               
-            unless TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].nil?
+            unless TeamCity.buildtype(id: "#{build_type.id}")['steps']['step'].nil?
               counter = 0
-              TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].each do |step|
+              TeamCity.buildtype(id: "#{build_type.id}")['steps']['step'].each do |step|
                 steps << counter
                 counter = counter + 1
               end
@@ -119,16 +142,16 @@ module TeamcityPrisma
           else      
             steps_template = Array.new    
             counter = 0
-            unless TeamCity.buildtype_template(id: build_type.id)["steps"]["step"].nil?
+            unless TeamCity.buildtype_template(id: build_type.id)['steps']['step'].nil?
               
-              TeamCity.buildtype_template(id: build_type.id)["steps"]["step"].each do |step|
+              TeamCity.buildtype_template(id: build_type.id)['steps']['step'].each do |step|
                 steps_template << step.id
                 counter = counter + 1
               end
             end
             steps = Array.new
-            unless TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].nil?
-              TeamCity.buildtype(id: "#{build_type.id}")["steps"]["step"].each do |step|
+            unless TeamCity.buildtype(id: "#{build_type.id}")['steps']['step'].nil?
+              TeamCity.buildtype(id: "#{build_type.id}")['steps']['step'].each do |step|
                 if !steps_template.include?(step.id)
                   steps << counter
                   counter = counter + 1
@@ -142,21 +165,21 @@ module TeamcityPrisma
         end            
         counter = counter + 1
       end
-      150.times{print " "}
+      150.times{print ' '}
       print"\r"     
     end
     
     def _get_properties(elements) 
       counter = 0   
-      fill = ""
-      65.times do fill = fill + " " end    
+      fill = ''
+      65.times do fill = fill + ' ' end    
       elements.each() do |element|
         element[:steps].each do |step|
-          if TeamCity.buildtype(id: element[:build_type_id])["steps"]["step"][step] 
-            TeamCity.buildtype(id: element[:build_type_id])["steps"]["step"][step]["properties"]["property"].each do |property| 
+          if TeamCity.buildtype(id: element[:build_type_id])['steps']['step'][step] 
+            TeamCity.buildtype(id: element[:build_type_id])['steps']['step'][step]['properties']['property'].each do |property| 
               if @step_type.nil? or compare(property.name, @step_type)
                 print "#{counter} of #{@@steps} steps, property: "     
-                90.times do print " " end
+                90.times do print ' ' end
                 print "\r"
                 print "#{counter} of #{@@steps} steps, property: #{property.name} \r"
                 if compare(property.value, @string)
@@ -169,7 +192,7 @@ module TeamcityPrisma
         counter = counter + 1  
         end
       end 
-      80.times do print " " end 
+      80.times do print ' ' end 
       print "\r"
     end
   
@@ -189,7 +212,7 @@ module TeamcityPrisma
     
     def cli_percentage(counter, blocks_total, message, message1)      
       print "#{counter*100/blocks_total.round/total}%#{9.chr}#{message}: "
-      80.times do print " " end
+      80.times do print ' ' end
       print "\r"
       print "#{counter*100/blocks_total.round/total}%#{9.chr}#{message}: #{message} \r"
     end
