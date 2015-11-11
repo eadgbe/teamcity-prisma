@@ -13,5 +13,6 @@ module TeamcityPrisma
   
   REST_LOCATION = '/httpAuth/app/rest'
   
+  PROPERTY_PREFIX = 'prop:'
 
 end

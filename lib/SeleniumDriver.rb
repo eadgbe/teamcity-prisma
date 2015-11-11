@@ -38,8 +38,8 @@ module TeamcityPrisma
            
              if !listbox.nil? and listbox.include?("listbox")                            
                begin
-                 wait.until {@@driver.find_element(:name, 'prop:'+result[:property].name)}
-                 html_element = @@driver.find_element(:name, 'prop:'+result[:property].name)
+                 wait.until {@@driver.find_element(:name, PROPERTY_PREFIX + result[:property].name)}
+                 html_element = @@driver.find_element(:name, PROPERTY_PREFIX + result[:property].name)
                  html_element.send_keys value
                rescue
                end
