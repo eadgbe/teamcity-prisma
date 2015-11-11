@@ -207,13 +207,5 @@ module TeamcityPrisma
       else  
       end
     end  
-    
-    def cli_percentage(counter, blocks_total, message, message1)      
-      print "#{counter*100/blocks_total.round/total}%#{9.chr}#{message}: "
-      80.times do print ' ' end
-      print "\r"
-      print "#{counter*100/blocks_total.round/total}%#{9.chr}#{message}: #{message} \r"
-    end
-    
   end
 end
