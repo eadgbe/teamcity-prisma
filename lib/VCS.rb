@@ -17,7 +17,7 @@ module TeamcityPrisma
       @output = parameters[5]
       prisma = TeamcityPrisma::Prisma.new
       prisma.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", "#{@operator}", "-m", "search", "-O", @output, "-c", config])
-      _find_custom_period
+      _get_items
       prisma.close_files()
       print "Completed                                                                                         \r\n" 
     end
@@ -25,7 +25,7 @@ module TeamcityPrisma
     
     private
     
-    def _find_custom_period
+    def _get_items
       vcs_roots = Array.new
       vcs_roots = TeamCity.vcs_roots
       total = TeamCity.vcs_roots.count

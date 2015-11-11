@@ -21,7 +21,7 @@ module TeamcityPrisma
       @operator = 'contains'
       prisma = TeamcityPrisma::Prisma.new
       prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', @operator, '-m', 'search', '-z', "#{@step_type}", '-O', @output, '-c', config])
-      _find_string
+      _get_items
       print "                                                                                \r\n"
       prisma.close_files()
       
@@ -39,7 +39,7 @@ module TeamcityPrisma
       prisma = TeamcityPrisma::Prisma.new
       prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', @operator, '-m', 'replace', '-z', "#{@step_type}", '-O', @output, '-c', config])
         
-      _find_string
+      _get_items
       print "                                                                                \r\n"  
       if $result.count() > 0
         _replace_string(site)
@@ -60,7 +60,7 @@ module TeamcityPrisma
       @operator = 'contains'
       prisma = TeamcityPrisma::Prisma.new
       prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', @operator, '-m', 'modify', '-z', "#{@step_type}", '-O', @output, '-c', config, '-b', @buildtype_id])
-      _find_string
+      _get_items
       print "                                                                                \r\n"
       if $result.count() > 0
         _replace_string(site, 'listbox', @buildtype_id)
@@ -75,7 +75,7 @@ module TeamcityPrisma
     
     private 
     
-    def _find_string    
+    def _get_items    
       build_types = Array.new
       build_types = TeamCity.buildtypes 
       @@blocks_total = 10.0
