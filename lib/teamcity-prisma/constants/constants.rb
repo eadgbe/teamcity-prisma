@@ -13,10 +13,5 @@ module TeamcityPrisma
   
   REST_LOCATION = '/httpAuth/app/rest'
   
-  FILE_FOUND = 'found.txt'
-  FILE_REPLACE = 'replace.txt'
-  FILE_PROCESSED = 'processed.txt'
-  FILE_ITEMS = 'items.txt'
-  FILE_ITEMS_PROCESSED = 'items_processed.txt'
 
 end

@@ -15,7 +15,6 @@ module TeamcityPrisma
       end
       
       def close_files
-        $files.write_found($result)
         $files.write_output($result)
         $files.close  
       end 

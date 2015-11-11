@@ -133,7 +133,6 @@ module TeamcityPrisma
                 counter = counter + 1
               end
             end      
-            $files.write_items({ build_type_id: "#{build_type.id}", steps: steps }) if steps.count > 0
             @@elements << { build_type_id: "#{build_type.id}", steps: steps } if steps.count > 0
             @@steps = @@steps + steps.count
             print "#{build_type.id}" + fill + "\n"
@@ -158,7 +157,6 @@ module TeamcityPrisma
                 end
               end
             end
-            $files.write_items( { build_type_id: "#{build_type.id}", steps: steps }) if steps.count > 0  
             @@elements << { build_type_id: "#{build_type.id}", steps: steps } if steps.count > 0
             @@steps = @@steps + steps.count               
           end
