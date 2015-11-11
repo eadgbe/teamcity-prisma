@@ -27,6 +27,7 @@ module TeamcityPrisma
   STEP_TYPE_POWERSHELL = "jetbrains_powershell"
   PROPERTY_NAME_POWERSHELL_EXECUTION = "jetbrains_powershell_execution"
   HTML_ELEMENT_VALUE_POWERSHELL_EXECUTION_MODE = "powershell_execution_mode"
+  REST_LOCATION = '/httpAuth/app/rest'
   
   STEP_TYPE_COMMAND_LINE = "simpleRunner"
   PROPERTY_NAME_COMMAND_LINE_EXECUTION = "jetbrains_powershell_execution"
