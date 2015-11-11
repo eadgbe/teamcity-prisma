@@ -2,7 +2,7 @@ require 'thwait'
 
 module TeamcityPrisma
   class VCS
-    @@params = ["-t", "vcs_root"]
+    @@params = ['-t', 'vcs_root']
       
     def initialize
       @@elements = Array.new    
@@ -16,7 +16,7 @@ module TeamcityPrisma
       @operator = parameters[4]
       @output = parameters[5]
       prisma = TeamcityPrisma::Prisma.new
-      prisma.process(@@params + ["-S", "#{site}", "-s", "#{@string}", "-o", "#{@operator}", "-m", "search", "-O", @output, "-c", config])
+      prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', "#{@operator}", '-m', 'search', '-O', @output, '-c', config])
       _get_items
       prisma.close_files()
       print "Completed                                                                                         \r\n" 
@@ -64,13 +64,13 @@ module TeamcityPrisma
 
       counter = 0      
       total = vcs_roots.count
-      fill = ""
-      129.times do fill = fill + " " end
+      fill = ''
+      129.times do fill = fill + ' ' end
 
       vcs_roots.each do |vcs_root|   
         
         print "#{counter*100/@@blocks_total.round/total}%#{9.chr}modificationCheckInterval: "
-        80.times do print " " end
+        80.times do print ' ' end
         print "\r"
         print "#{counter*100/@@blocks_total.round/total}%#{9.chr}modificationCheckInterval: #{vcs_root.id} \r"
         
@@ -80,7 +80,7 @@ module TeamcityPrisma
         end              
         counter = counter + 1
       end        
-      150.times{print " "}
+      150.times{print ' '}
       print"\r"   
     end
     
@@ -88,12 +88,12 @@ module TeamcityPrisma
       counter = 0
       result = Array.new
       total = elements.count
-      fill = ""
-      65.times do fill = fill + " " end
+      fill = ''
+      65.times do fill = fill + ' ' end
      
       elements.each() do |element|     
         print "#{counter*100/@@blocks_total.round/total}% compare: "
-        90.times do print " " end
+        90.times do print ' ' end
         print "\r"
         print "#{counter*100/@@blocks_total.round/total}% compare: #{element.id} \r"       
         if compare(TeamCity.vcs_root_details(element.id).modificationCheckInterval, @string)
@@ -103,7 +103,7 @@ module TeamcityPrisma
         counter = counter + 1     
       end
       
-      80.times do print " " end 
+      80.times do print ' ' end 
       print "\r"    
       $result << result
     end

@@ -42,12 +42,12 @@ module TeamcityPrisma
         
         opts.on('-O', '--output-file [STRING]',
                 'specify the output file path < FilePath >') do |string|
-          self[:output] = string.gsub("\\", "/")
+          self[:output] = string.gsub('\\', '/')
         end
         
         opts.on('-c', '--config [STRING]',
                 'specify the input config file path < FilePath >') do |string|
-          self[:config] = string.gsub("\\", "/")
+          self[:config] = string.gsub('\\', '/')
         end
         
         opts.on('-z', '--step-type [STRING]',

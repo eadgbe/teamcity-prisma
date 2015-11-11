@@ -1,7 +1,7 @@
 require 'teamcity'
-require "selenium-webdriver"
-require "pp"
-require "yaml"
+require 'selenium-webdriver'
+require 'pp'
+require 'yaml'
 require File.join(File.dirname(__FILE__), 'teamcity-prisma', 'constants/constants.rb')
 require File.join(File.dirname(__FILE__), 'PrismaArguments.rb')
 require File.join(File.dirname(__FILE__), 'BuildType.rb')
@@ -17,16 +17,16 @@ module TeamcityPrisma
     def initialize(parameters)
       puts "log: parameters #{parameters}"
       case parameters[0]
-        when "property_search"
+        when 'property_search'
            $prisma = TeamcityPrisma::BuildType.new
            $prisma.find_string(parameters)   
-        when "property_replace"
+        when 'property_replace'
            $prisma = TeamcityPrisma::BuildType.new
            $prisma.replace_string(parameters)
-        when "property_modify"
+        when 'property_modify'
            $prisma = TeamcityPrisma::BuildType.new
            $prisma.modify_listbox(parameters)
-        when "vcsroot_find"
+        when 'vcsroot_find'
            $prisma = TeamcityPrisma::VCS.new
            $prisma.find_custom_period(parameters)
       else

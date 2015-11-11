@@ -1,42 +1,34 @@
-
 module TeamcityPrisma
-  class SeleniumDriver
-    
+  class SeleniumDriver  
      def initialize()
-     
         @@client = Selenium::WebDriver::Remote::Http::Default.new
         @@client.timeout = 240 # seconds
         @@driver = Selenium::WebDriver.for(:firefox, :http_client => @@client)
-        @@driver.manage.timeouts.implicit_wait = 10 # seconds
-               
+        @@driver.manage.timeouts.implicit_wait = 10 # seconds        
      end
-     
      def close
        @@driver.quit
      end
      
      def replace(string, new_string, url, listbox = nil, buildtypeid=nil)
-       
        $result.each() do |result|
          result[:property].name
-         runner =  TeamCity.buildtype(id: result[:build_type_id])["steps"]["step"][result[:step]].id
-           
+         runner =  TeamCity.buildtype(id: result[:build_type_id])['steps']['step'][result[:step]].id   
          unless buildtypeid.nil? 
            unless result[:build_type_id].include?(buildtypeid)
              next
            end
          end
-
          unless runner.nil? 
            @@driver.navigate.to "#{url}/admin/editRunType.html?id=buildType:#{result[:build_type_id]}&runnerId=#{runner}"
                     
            wait = Selenium::WebDriver::Wait.new(:timeout => 20) # seconds          
-             
+           
            value = result[:property].value
            value = value.gsub(/#{string}/, new_string)
 
            
-             if !listbox.nil? and listbox.include?("listbox")                            
+             if !listbox.nil? and listbox.include?('listbox')                            
                begin
                  wait.until {@@driver.find_element(:name, PROPERTY_PREFIX + result[:property].name)}
                  html_element = @@driver.find_element(:name, PROPERTY_PREFIX + result[:property].name)

@@ -6,12 +6,12 @@ module TeamcityPrisma
     end
     
     def create_output(path)
-      @output = File.open(path, "w")
+      @output = File.open(path, 'w')
     end
     
     def write_output(content)
       @output.write(content.to_yaml())
-      puts "writing output_file"
+      puts 'writing output_file'
     end
     
     def close

@@ -15,7 +15,7 @@ module TeamcityPrisma
         @url = URL_TC3
         @login = LOGIN_TC3
       else 
-        puts "The Site has not been spec."
+        puts 'The Site has not been spec.'
       end                
       @site = server      
     end  

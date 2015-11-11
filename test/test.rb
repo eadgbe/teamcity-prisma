@@ -1,7 +1,7 @@
 gem 'simplecov', :require => false, :group => :test
 require 'simplecov'
 SimpleCov.start
-gem "minitest"  
+gem 'minitest'  
 require 'minitest/autorun'
 require 'teamcity-prisma'
 #require 'C:/teamcity-prisma/lib/teamcity-prisma.rb'
