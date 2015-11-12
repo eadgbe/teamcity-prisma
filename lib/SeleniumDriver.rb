@@ -22,13 +22,13 @@ module TeamcityRuby
          unless runner.nil? 
            @@driver.navigate.to "#{url}/admin/editRunType.html?id=buildType:#{result[:build_type_id]}&runnerId=#{runner}"
                     
-           wait = Selenium::WebDriver::Wait.new(:timeout => 20) # seconds          
+           wait = Selenium::WebDriver::Wait.new(:timeout => 20)
            
            value = result[:property].value
            value = value.gsub(/#{string}/, new_string)
 
            
-             if !listbox.nil? and listbox.include?('listbox')                            
+             if !listbox.nil? and listbox.include?(LISTBOX_PARAMETER)                            
                begin
                  wait.until {@@driver.find_element(:name, PROPERTY_PREFIX + result[:property].name)}
                  html_element = @@driver.find_element(:name, PROPERTY_PREFIX + result[:property].name)

@@ -14,9 +14,9 @@ module TeamcityRuby
       TeamcityRuby::RubyClient.new().ConfigTeamcityAPI()    
       end
       
-      def close_files
-        $files.write_output($result)
-        $files.close  
-      end 
+    def close_files
+      $files.write_output($result)
+      $files.close  
+    end 
   end
 end

@@ -1,8 +1,7 @@
 module TeamcityRuby
   class RubyClient
-
     def ConfigTeamcityAPI
-    
+      # https://github.com/jperry/teamcity-ruby-client
       # This only needs to be set once per Ruby execution.
       # You may use guestAuth instead of httpAuth and omit the use of http_user and http_password
       # This is using the latest version of the api
@@ -17,7 +16,7 @@ module TeamcityRuby
         when SITE_TC3
           url = URL_TC3 + REST_LOCATION       
         else 
-          puts 'The Site has not been spec.'
+          puts SITE_NOT_SPECIFIED_LEGEND
         end
         config.endpoint = url
         config.http_user = USER_SVC

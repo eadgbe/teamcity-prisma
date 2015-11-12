@@ -10,9 +10,7 @@ module TeamcityRuby
       @@steps = 0
     end
       
-    
     def find_string(parameters)
-      
       config = parameters[1]
       site = parameters[2]
       @string = parameters[3]
@@ -22,12 +20,12 @@ module TeamcityRuby
       prisma = TeamcityRuby::Prisma.new
       prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', @operator, '-m', 'search', '-z', "#{@step_type}", '-O', @output, '-c', config])
       _get_items
-      print "                                                                                \r\n"
+      fill = ''
+      80.times do fill = fill + ' ' end
+      print fill + "\r\n"
       prisma.close_files()
-      
     end
-    
-    
+     
     def replace_string(parameters)
       config = parameters[1]
       site = parameters[2]
@@ -40,13 +38,14 @@ module TeamcityRuby
       prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', @operator, '-m', 'replace', '-z', "#{@step_type}", '-O', @output, '-c', config])
         
       _get_items
-      print "                                                                                \r\n"  
+      fill = ''
+      80.times do fill = fill + ' ' end
+      print fill + "\r\n"  
       if $result.count() > 0
         _replace_string(site)
       end      
         
-      prisma.close_files()
-        
+      prisma.close_files()   
     end
     
     def modify_listbox(parameters)
@@ -61,20 +60,22 @@ module TeamcityRuby
       prisma = TeamcityRuby::Prisma.new
       prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', @operator, '-m', 'modify', '-z', "#{@step_type}", '-O', @output, '-c', config, '-b', @buildtype_id])
       _get_items
-      print "                                                                                \r\n"
+      fill = ''
+      80.times do fill = fill + ' ' end
+      print fill + "\r\n"
       if $result.count() > 0
-        _replace_string(site, 'listbox', @buildtype_id)
+        _replace_string(site, LISTBOX_PARAMETER, @buildtype_id)
       end
       prisma.close_files()
     end
     
-    def _replace_string(site, listbox=nil, buildtypeid=nil)
-      $WebInterface.Replace(@string, @new_string, listbox, buildtypeid)     
-      $WebInterface = TeamcityRuby::RemoteWriter.new(site)
-    end  
-    
     private 
-    
+
+    def _replace_string(site, listbox=nil, buildtypeid=nil)
+      $WebInterface = TeamcityRuby::RemoteWriter.new(site)
+      $WebInterface.replace(@string, @new_string, listbox, buildtypeid)     
+    end  
+
     def _get_items    
       build_types = Array.new
       build_types = TeamCity.buildtypes 
@@ -103,13 +104,10 @@ module TeamcityRuby
       end            
       ThreadsWait.all_waits(threads)   
       $result.flatten!()            
-      puts "\n\nTotal found: #{$result.count}"             
+      puts "\n\nTotal of Items found: #{$result.count}"             
     end
     
-    
-    
     def _get_steps_ignore_templates(builds)
-
       counter = 0
       total = builds.count
       fill = ' '
@@ -175,12 +173,12 @@ module TeamcityRuby
         element[:steps].each do |step|
           if TeamCity.buildtype(id: element[:build_type_id])['steps']['step'][step] 
             TeamCity.buildtype(id: element[:build_type_id])['steps']['step'][step]['properties']['property'].each do |property| 
-              if @step_type.nil? or compare(property.name, @step_type)
+              if @step_type.nil? or _compare(property.name, @step_type)
                 print "#{counter} of #{@@steps} steps, property: "     
                 90.times do print ' ' end
                 print "\r"
                 print "#{counter} of #{@@steps} steps, property: #{property.name} \r"
-                if compare(property.value, @string)
+                if _compare(property.value, @string)
                   $result << { build_type_id: "#{element[:build_type_id]}", step: step, property: property } 
                   print "#{element[:build_type_id]} -  #{property.name} " + fill + "\n"           
                 end                
@@ -194,15 +192,15 @@ module TeamcityRuby
       print "\r"
     end
   
-    def compare(x,y)
+    def _compare(x,y)
       case @operator
-      when 'minor_than'
+      when MINOR
         x.to_i < y.to_i
-      when 'greater_than'
+      when GREATER
         x.to_i > y.to_i
-      when 'equals'
+      when EQUALS
         x.to_i == y.to_i      
-      when 'contains'
+      when CONTAINS
         x.to_s.include?(y.to_s)
       else  
       end

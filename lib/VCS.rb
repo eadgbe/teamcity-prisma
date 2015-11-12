@@ -19,9 +19,10 @@ module TeamcityRuby
       prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', "#{@operator}", '-m', 'search', '-O', @output, '-c', config])
       _get_items
       prisma.close_files()
-      print "Completed                                                                                         \r\n" 
+      fill = ''
+      80.times do fill = fill + ' ' end
+      print fill + "\r\n"
     end
-    
     
     private
     
@@ -42,7 +43,7 @@ module TeamcityRuby
       end      
       ThreadsWait.all_waits(*threads)
       
-      puts "\n\nTotal with a custom period: #{@@elements.size}\n\n"
+      puts "\n\nTotal of VCS with a custom period: #{@@elements.size}\n\n"
             
       @@blocks_total = @@elements.size if @@elements.size < 5
       threads = []
@@ -57,7 +58,7 @@ module TeamcityRuby
       ThreadsWait.all_waits(threads)
          
       $result.flatten!()
-      puts "\n\nTotal found: #{$result.count}"        
+      puts "\n\nTotal of items found: #{$result.count}"        
     end   
     
     def _find_custom_period_property(vcs_roots)  
@@ -96,7 +97,7 @@ module TeamcityRuby
         90.times do print ' ' end
         print "\r"
         print "#{counter*100/@@blocks_total.round/total}% compare: #{element.id} \r"       
-        if compare(TeamCity.vcs_root_details(element.id).modificationCheckInterval, @string)
+        if _compare(TeamCity.vcs_root_details(element.id).modificationCheckInterval, @string)
           result.push(element)
           print "#{element.id} - #{TeamCity.vcs_root_details(element.id).modificationCheckInterval}" + fill + "\n"
         end         
@@ -108,15 +109,15 @@ module TeamcityRuby
       $result << result
     end
     
-    def compare(x,y)
+    def _compare(x,y)
       case @operator
-      when 'minor_than'
+      when MINOR
         x.to_i < y.to_i
-      when 'greater_than'
+      when GREATER
         x.to_i > y.to_i
-      when 'equals'
+      when EQUALS
         x.to_i == y.to_i
-      when 'contains'
+      when CONTAINS
         x.to_s.include?(y.to_s)
       else    
       end

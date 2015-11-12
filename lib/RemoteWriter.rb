@@ -20,7 +20,7 @@ module TeamcityRuby
       @site = server      
     end  
           
-    def Replace(string, new_string, listbox=nil, buildtypeid=nil)   
+    def replace(string, new_string, listbox=nil, buildtypeid=nil)   
       $seleniumDriver = TeamcityRuby::SeleniumDriver.new()
       $seleniumDriver.login_teamcity(@login)
       $seleniumDriver.replace(string, new_string, @url, listbox, buildtypeid)
