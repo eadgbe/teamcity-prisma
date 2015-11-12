@@ -1,4 +1,4 @@
-module TeamcityPrisma
+module TeamcityRuby
   class RubyClient
 
     def ConfigTeamcityAPI

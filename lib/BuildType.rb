@@ -1,4 +1,4 @@
-module TeamcityPrisma
+module TeamcityRuby
   
   class BuildType   
     Thread.abort_on_exception=true
@@ -19,7 +19,7 @@ module TeamcityPrisma
       @output = parameters[4]
       @step_type = parameters[5] or nil
       @operator = 'contains'
-      prisma = TeamcityPrisma::Prisma.new
+      prisma = TeamcityRuby::Prisma.new
       prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', @operator, '-m', 'search', '-z', "#{@step_type}", '-O', @output, '-c', config])
       _get_items
       print "                                                                                \r\n"
@@ -36,7 +36,7 @@ module TeamcityPrisma
       @output = parameters[5]
       @step_type = parameters[6] or nil
       @operator = 'contains'
-      prisma = TeamcityPrisma::Prisma.new
+      prisma = TeamcityRuby::Prisma.new
       prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', @operator, '-m', 'replace', '-z', "#{@step_type}", '-O', @output, '-c', config])
         
       _get_items
@@ -58,7 +58,7 @@ module TeamcityPrisma
       @step_type = parameters[6] or nil 
       @buildtype_id = parameters[7] or nil
       @operator = 'contains'
-      prisma = TeamcityPrisma::Prisma.new
+      prisma = TeamcityRuby::Prisma.new
       prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', @operator, '-m', 'modify', '-z', "#{@step_type}", '-O', @output, '-c', config, '-b', @buildtype_id])
       _get_items
       print "                                                                                \r\n"
@@ -69,8 +69,8 @@ module TeamcityPrisma
     end
     
     def _replace_string(site, listbox=nil, buildtypeid=nil)
-      $WebInterface = TeamcityPrisma::RemoteWriter.new(site)
       $WebInterface.Replace(@string, @new_string, listbox, buildtypeid)     
+      $WebInterface = TeamcityRuby::RemoteWriter.new(site)
     end  
     
     private 

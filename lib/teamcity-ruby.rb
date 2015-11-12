@@ -2,38 +2,35 @@ require 'teamcity'
 require 'selenium-webdriver'
 require 'pp'
 require 'yaml'
-require File.join(File.dirname(__FILE__), 'teamcity-prisma', 'constants/constants.rb')
+require File.join(File.dirname(__FILE__), 'teamcity-ruby', 'constants/constants.rb')
 require File.join(File.dirname(__FILE__), 'PrismaArguments.rb')
 require File.join(File.dirname(__FILE__), 'BuildType.rb')
 require File.join(File.dirname(__FILE__), 'Prisma.rb')
 require File.join(File.dirname(__FILE__), 'SeleniumDriver.rb')
 require File.join(File.dirname(__FILE__), 'Project.rb')
 require File.join(File.dirname(__FILE__), 'VCS.rb')
-require File.join(File.dirname(__FILE__), 'teamcity-prisma/Files.rb')
+require File.join(File.dirname(__FILE__), 'teamcity-ruby/Files.rb')
 require File.join(File.dirname(__FILE__), 'RemoteWriter.rb')
 
-module TeamcityPrisma
+module TeamcityRuby
   class Core
     def initialize(parameters)
-      puts "log: parameters #{parameters}"
       case parameters[0]
         when 'property_search'
-           $prisma = TeamcityPrisma::BuildType.new
+           $prisma = TeamcityRuby::BuildType.new
            $prisma.find_string(parameters)   
         when 'property_replace'
-           $prisma = TeamcityPrisma::BuildType.new
+           $prisma = TeamcityRuby::BuildType.new
            $prisma.replace_string(parameters)
         when 'property_modify'
-           $prisma = TeamcityPrisma::BuildType.new
+           $prisma = TeamcityRuby::BuildType.new
            $prisma.modify_listbox(parameters)
         when 'vcsroot_find'
-           $prisma = TeamcityPrisma::VCS.new
+           $prisma = TeamcityRuby::VCS.new
            $prisma.find_custom_period(parameters)
       else
         puts "Type parameter doesn't match any valid option.\n parameters = #{parameters[0].pretty_inspect()}"  
       end
     end      
-  end #Class end
-end #Module end
-
-TeamcityPrisma::Core.new(ARGV) if ARGV.length() > 0
+  end
+end

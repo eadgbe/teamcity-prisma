@@ -1,12 +1,8 @@
-module TeamcityPrisma
+module TeamcityRuby
   class Files
     def initialize(mode, output)
       @mode = mode
       create_output(output) 
-    end
-    
-    def create_output(path)
-      @output = File.open(path, 'w')
     end
     
     def write_output(content)
@@ -19,5 +15,10 @@ module TeamcityPrisma
       @output = nil
     end
     
+    private
+    
+    def create_output(path)
+      @output = File.open(path, 'w')
+    end  
   end
 end

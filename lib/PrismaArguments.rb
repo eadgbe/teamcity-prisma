@@ -1,7 +1,7 @@
 require 'optparse'
 
 
-module TeamcityPrisma
+module TeamcityRuby
 
   class PrismaArguments < Hash
     def initialize(args)

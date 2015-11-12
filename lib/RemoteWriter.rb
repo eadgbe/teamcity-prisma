@@ -1,4 +1,4 @@
-module TeamcityPrisma
+module TeamcityRuby
   class RemoteWriter
     def initialize(server)  
       case server 
@@ -21,7 +21,7 @@ module TeamcityPrisma
     end  
           
     def Replace(string, new_string, listbox=nil, buildtypeid=nil)   
-      $seleniumDriver = TeamcityPrisma::SeleniumDriver.new()
+      $seleniumDriver = TeamcityRuby::SeleniumDriver.new()
       $seleniumDriver.login_teamcity(@login)
       $seleniumDriver.replace(string, new_string, @url, listbox, buildtypeid)
       $seleniumDriver.close() 

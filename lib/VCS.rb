@@ -1,6 +1,6 @@
 require 'thwait'
 
-module TeamcityPrisma
+module TeamcityRuby
   class VCS
     @@params = ['-t', 'vcs_root']
       
@@ -15,7 +15,7 @@ module TeamcityPrisma
       @string = parameters[3]
       @operator = parameters[4]
       @output = parameters[5]
-      prisma = TeamcityPrisma::Prisma.new
+      prisma = TeamcityRuby::Prisma.new
       prisma.process(@@params + ['-S', "#{site}", '-s', "#{@string}", '-o', "#{@operator}", '-m', 'search', '-O', @output, '-c', config])
       _get_items
       prisma.close_files()

@@ -1,4 +1,4 @@
-module TeamcityPrisma
+module TeamcityRuby
   class SeleniumDriver  
      def initialize()
         @@client = Selenium::WebDriver::Remote::Http::Default.new

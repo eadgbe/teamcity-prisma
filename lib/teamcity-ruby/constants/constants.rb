@@ -1,4 +1,4 @@
-module TeamcityPrisma
+module TeamcityRuby
   
   ###############################################################################################
   ##
@@ -14,5 +14,18 @@ module TeamcityPrisma
   REST_LOCATION = '/httpAuth/app/rest'
   
   PROPERTY_PREFIX = 'prop:'
+  LISTBOX_PARAMETER = 'listbox'
+  SITE_NOT_SPECIFIED_LEGEND = 'The Site has not been spec.'
 
+  ###############################################################################################
+  ##
+  ##  OPERATORS
+  ##
+  ###############################################################################################
+  
+  MINOR = 'minor_than'
+  GREATER = 'greater_than'
+  EQUALS= 'equals'
+  CONTAINS = 'contains'
+  
 end
