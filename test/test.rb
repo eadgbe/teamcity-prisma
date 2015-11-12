@@ -3,8 +3,8 @@ require 'simplecov'
 SimpleCov.start
 gem 'minitest'  
 require 'minitest/autorun'
-#require 'teamcity-ruby'
-require 'C:/teamcity-ruby/lib/teamcity-ruby.rb'
+require 'teamcity-ruby'
+#require 'C:/teamcity-ruby/lib/teamcity-ruby.rb'
 require 'yaml'
 
 class PrismaTest < Minitest::Test
