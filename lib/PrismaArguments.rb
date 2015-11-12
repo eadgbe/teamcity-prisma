@@ -21,7 +21,7 @@ module TeamcityRuby
         end
         
         opts.on('-S', '--site [STRING]',
-                'site [ dev | tc1 ]') do |string|
+                'site [ dev | tc1 | tc2 | tc3 ]') do |string|
           self[:site] = string
         end
         
