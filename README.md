@@ -24,7 +24,7 @@ Create a config file based on the next template:
 			end  
 
 
-INSTRUCTION
+INSTRUCTIONS
 
 Install the gem:
 
