@@ -29,6 +29,7 @@ INSTRUCTIONS
 Install the gem:
 
   gem build .\teamcity-ruby.gemspec
+  
   gem install .\teamcity-ruby-0.0.1.gem
 
 Require:
