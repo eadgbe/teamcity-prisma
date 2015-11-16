@@ -30,7 +30,7 @@ class PrismaTest < Minitest::Test
   #TC2
   def test_vcs_search_minor_than_500
     result = TeamcityRuby::Core.new(['vcsroot_find', '.\config.rb', 'tc1', '500', 'minor_than', '.\result_vcs_search_minor_than_500_tc1.yml'])
-    result = TeamcityRuby::Core.new(['vcsroot_find', '.\config.rb', 'tc2', '500', 'minor_than', '.\result_vcs_search_minor_than_500_tc1.yml'])     
+    result = TeamcityRuby::Core.new(['vcsroot_find', '.\config.rb', 'tc2', '500', 'minor_than', '.\result_vcs_search_minor_than_500_tc2.yml'])     
   end
   
   #############################################################################################################
