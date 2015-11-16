@@ -26,6 +26,11 @@ class PrismaTest < Minitest::Test
     assert_equal result, bed  
   end
   
+  #TC1
+  def test_vcs_search_minor_than_500
+    result = TeamcityRuby::Core.new(['vcsroot_find', '.\config.rb', 'tc1', '500', 'minor_than', '.\result_vcs_search_minor_than_500_tc1.yml'])   
+  end
+  
   #############################################################################################################
   ###
   ###     BUILD STEP        ----------       S  E  A  R  C  H      ----------
