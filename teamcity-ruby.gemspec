@@ -11,9 +11,9 @@ Gem::Specification.new do |s|
   s.license       = 'MIT'
   
   
-  s.add_runtime_dependency 'simplecov'
-  s.add_runtime_dependency 'teamcity-ruby-client'
-  s.add_runtime_dependency 'selenium-webdriver'
-  s.add_runtime_dependency 'minitest'
+  s.add_runtime_dependency 'simplecov', '~> 0.10.0'
+  s.add_runtime_dependency 'teamcity-ruby-client', '~> 1.3.0'
+  s.add_runtime_dependency 'selenium-webdriver', '~> 2.48.0'
+  s.add_runtime_dependency 'minitest', '~> 5.8.0'
   
 end
