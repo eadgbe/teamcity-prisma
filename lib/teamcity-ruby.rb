@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'bundler/setup'
+
 require 'teamcity'
 require 'selenium-webdriver'
 require 'pp'

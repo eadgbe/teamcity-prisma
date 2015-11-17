@@ -9,4 +9,11 @@ Gem::Specification.new do |s|
   s.files       = ["lib/BuildType.rb", "lib/Prisma.rb", "lib/PrismaArguments.rb", "lib/RemoteWriter.rb", "lib/RubyClient.rb", "lib/SeleniumDriver.rb", "lib/teamcity-ruby.rb", "lib/VCS.rb", "lib/teamcity-ruby/constants/constants.rb", "lib/teamcity-ruby/Files.rb"]
   s.homepage    = 'https://github.dev.xero.com/Xero/teamcity-ruby'
   s.license       = 'MIT'
+  
+  
+  s.add_runtime_dependency 'simplecov'
+  s.add_runtime_dependency 'teamcity-ruby-client'
+  s.add_runtime_dependency 'selenium-webdriver'
+  s.add_runtime_dependency 'minitest'
+  
 end
