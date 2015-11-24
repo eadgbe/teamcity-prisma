@@ -6,6 +6,7 @@ require 'minitest/autorun'
 require 'teamcity-ruby'
 #require '.\lib/teamcity-ruby.rb'
 require 'yaml'
+require 'statsd'
 
 class PrismaTest < Minitest::Test
   def setup
@@ -22,6 +23,13 @@ class PrismaTest < Minitest::Test
   def test_vcs_search_minor_than_60
     result = TeamcityRuby::Core.new(['vcsroot_find', '.\config.rb', 'dev', '60', 'minor_than', '.\result_vcs_search_minor_than_60.yml'])   
     result = YAML::load_file('.\result_vcs_search_minor_than_60.yml')
+    #Datagod Gauge
+    if result.size() > 0    
+      statsd = Statsd.new
+      statsd.gauge('dev VCS roots minor than 60', result.count)
+      puts "result.count : #{result.count}"
+    end
+    
     bed = YAML::load_file(File.join(File.dirname(__FILE__), 'bed_vcs_search_minor_than_60.yml'))    
     assert_equal result, bed  
   end
