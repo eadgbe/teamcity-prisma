@@ -21,7 +21,7 @@ class PrismaTest < Minitest::Test
   ###
   #############################################################################################################
   def test_vcs_search_minor_than_60
-    result = TeamcityRuby::Core.new(['vcsroot_find', '.\config.rb', 'dev', '60', 'minor_than', '.\result_vcs_search_minor_than_60.yml'])   
+    TeamcityRuby::Core.new(['vcsroot_find', '.\config.rb', 'dev', '60', 'minor_than', '.\result_vcs_search_minor_than_60.yml'])   
     result = YAML::load_file('.\result_vcs_search_minor_than_60.yml')
     #Datagod Gauge
     if result.size() > 0    
@@ -37,7 +37,8 @@ class PrismaTest < Minitest::Test
   #TC1
   #TC2
   def test_vcs_search_minor_than_500
-    result = TeamcityRuby::Core.new(['vcsroot_find', '.\config.rb', 'tc1', '500', 'minor_than', '.\result_vcs_search_minor_than_500_tc1.yml'])
+    TeamcityRuby::Core.new(['vcsroot_find', '.\config.rb', 'tc1', '500', 'minor_than', '.\result_vcs_search_minor_than_500_tc1.yml'])
+    result = YAML::load_file('.\result_vcs_search_minor_than_500_tc1.yml')
     #Datagod Gauge
     if result.size() > 0
       statsd = Statsd.new
