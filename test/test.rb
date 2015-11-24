@@ -46,7 +46,14 @@ class PrismaTest < Minitest::Test
       puts "result.count : #{result.count}"
     end
     
-    result = TeamcityRuby::Core.new(['vcsroot_find', '.\config.rb', 'tc2', '500', 'minor_than', '.\result_vcs_search_minor_than_500_tc2.yml'])     
+    TeamcityRuby::Core.new(['vcsroot_find', '.\config.rb', 'tc2', '500', 'minor_than', '.\result_vcs_search_minor_than_500_tc2.yml']) 
+    result = YAML::load_file('.\result_vcs_search_minor_than_500_tc2.yml')
+    #Datagod Gauge
+    if result.size() > 0
+      statsd = Statsd.new
+      statsd.gauge('tc2 VCS roots minor than 500', result.count)
+      puts "result.count : #{result.count}"
+    end    
   end
   
   #############################################################################################################
