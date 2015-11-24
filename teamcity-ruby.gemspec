@@ -15,5 +15,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'teamcity-ruby-client', '~> 1.3.0'
   s.add_runtime_dependency 'selenium-webdriver', '~> 2.48.0'
   s.add_runtime_dependency 'minitest', '~> 5.8.0'
+  s.add_runtime_dependency 'dogstatsd-ruby', '~> 1.5.0'
   
 end
