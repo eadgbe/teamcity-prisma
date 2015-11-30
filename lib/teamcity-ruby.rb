@@ -17,6 +17,7 @@ require File.join(File.dirname(__FILE__), 'RemoteWriter.rb')
 module TeamcityRuby
   class Core
     def initialize(parameters)
+      $errors = Array.new
       case parameters[0]
         when 'property_search'
            $prisma = TeamcityRuby::BuildType.new
@@ -33,6 +34,8 @@ module TeamcityRuby
       else
         puts "Type parameter doesn't match any valid option.\n parameters = #{parameters[0].pretty_inspect()}"  
       end
+      puts "Errors:"
+      puts $errors.pretty_print_inspect()
     end      
   end
 end

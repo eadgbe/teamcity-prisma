@@ -8,6 +8,8 @@ module TeamcityRuby
       $result = Array.new
       @@elements = Array.new
       @@steps = 0
+      @counter_steps = 0
+      @counter_properties = 0
     end
       
     def find_string(parameters)
@@ -113,79 +115,98 @@ module TeamcityRuby
       fill = ' '
       129.times do fill = fill + ' ' end
       builds.each do |build_type|
-        print "#{counter*100/@@blocks_total.round/total}%#{9.chr}template?: "
-              80.times do print ' ' end
-              print "\r"
-              print "#{counter*100/@@blocks_total.round/total}%#{9.chr}template?: #{build_type.id} \r"
-
-        #While the script is running a build could be deleted. Prevent this situation.
-        unless TeamCity.buildtype(id: "#{build_type.id}").nil?      
-            
-          #Collect all the steps of builds that are not based on Templates.             
-          if TeamCity.buildtype(id: "#{build_type.id}")['template'].nil?                 
-            steps = Array.new               
-            unless TeamCity.buildtype(id: "#{build_type.id}")['steps']['step'].nil?
-              counter = 0
-              TeamCity.buildtype(id: "#{build_type.id}")['steps']['step'].each do |step|
-                steps << counter
-                counter = counter + 1
-              end
-            end      
-            @@elements << { build_type_id: "#{build_type.id}", steps: steps } if steps.count > 0
-            @@steps = @@steps + steps.count
-            print "#{build_type.id}" + fill + "\n"
-      
-          #For builds based on templates ignore their inherited steps.  
-          else      
-            steps_template = Array.new    
-            counter = 0
-            unless TeamCity.buildtype_template(id: build_type.id)['steps']['step'].nil?
+        begin
+          print "#{@counter_steps*100/@@blocks_total.round/total}%#{9.chr}template?: "
+                80.times do print ' ' end
+                print "\r"
+                print "#{@counter_steps*100/@@blocks_total.round/total}%#{9.chr}template?: #{build_type.id} \r"
+  
+          #While the script is running a build could be deleted. Prevent this situation.
+          unless TeamCity.buildtype(id: "#{build_type.id}").nil?      
               
-              TeamCity.buildtype_template(id: build_type.id)['steps']['step'].each do |step|
-                steps_template << step.id
-                counter = counter + 1
-              end
-            end
-            steps = Array.new
-            unless TeamCity.buildtype(id: "#{build_type.id}")['steps']['step'].nil?
-              TeamCity.buildtype(id: "#{build_type.id}")['steps']['step'].each do |step|
-                if !steps_template.include?(step.id)
+            #Collect all the steps of builds that are not based on Templates.             
+            if TeamCity.buildtype(id: "#{build_type.id}")['template'].nil?                 
+              steps = Array.new               
+              unless TeamCity.buildtype(id: "#{build_type.id}")['steps']['step'].nil?
+                counter = 0
+                TeamCity.buildtype(id: "#{build_type.id}")['steps']['step'].each do |step|
                   steps << counter
                   counter = counter + 1
                 end
+              end      
+              @@elements << { build_type_id: "#{build_type.id}", steps: steps } if steps.count > 0
+              @@steps = @@steps + steps.count
+              print "#{build_type.id}" + fill + "\n"
+        
+            #For builds based on templates ignore their inherited steps.  
+            else      
+              steps_template = Array.new    
+              counter = 0
+              unless TeamCity.buildtype_template(id: build_type.id)['steps']['step'].nil?
+                
+                TeamCity.buildtype_template(id: build_type.id)['steps']['step'].each do |step|
+                  steps_template << step.id
+                  counter = counter + 1
+                end
               end
+              steps = Array.new
+              unless TeamCity.buildtype(id: "#{build_type.id}")['steps']['step'].nil?
+                TeamCity.buildtype(id: "#{build_type.id}")['steps']['step'].each do |step|
+                  if !steps_template.include?(step.id)
+                    steps << counter
+                    counter = counter + 1
+                  end
+                end
+              end
+              @@elements << { build_type_id: "#{build_type.id}", steps: steps } if steps.count > 0
+              @@steps = @@steps + steps.count               
             end
-            @@elements << { build_type_id: "#{build_type.id}", steps: steps } if steps.count > 0
-            @@steps = @@steps + steps.count               
-          end
-        end            
-        counter = counter + 1
+          end            
+          @counter_steps = @counter_steps + 1
+        rescue 
+          puts "Error:"
+          puts $!, $@
+          $erros << "_get_steps_ignore_templates: #{build_type}"
+          sleep 15
+          next
+        end
       end
       150.times{print ' '}
       print"\r"     
     end
     
     def _get_properties(elements) 
-      counter = 0   
+      @counter_properties = 0   
       fill = ''
       65.times do fill = fill + ' ' end    
       elements.each() do |element|
-        element[:steps].each do |step|
-          if TeamCity.buildtype(id: element[:build_type_id])['steps']['step'][step] 
-            TeamCity.buildtype(id: element[:build_type_id])['steps']['step'][step]['properties']['property'].each do |property| 
-              if @step_type.nil? or _compare(property.name, @step_type)
-                print "#{counter} of #{@@steps} steps, property: "     
-                90.times do print ' ' end
-                print "\r"
-                print "#{counter} of #{@@steps} steps, property: #{property.name} \r"
-                if _compare(property.value, @string)
-                  $result << { build_type_id: "#{element[:build_type_id]}", step: step, property: property } 
-                  print "#{element[:build_type_id]} -  #{property.name} " + fill + "\n"           
-                end                
-              end                     
-            end
-          end 
-        counter = counter + 1  
+        begin
+          element[:steps].each do |step|
+            #While the script is running a build could be deleted. Prevent this situation.
+            unless TeamCity.buildtype(id: element[:build_type_id]).nil?   
+              if TeamCity.buildtype(id: element[:build_type_id])['steps']['step'][step] 
+                TeamCity.buildtype(id: element[:build_type_id])['steps']['step'][step]['properties']['property'].each do |property| 
+                  if @step_type.nil? or _compare(property.name, @step_type)
+                    print "#{@counter_properties} of #{@@steps} steps, property: "     
+                    90.times do print ' ' end
+                    print "\r"
+                    print "#{@counter_properties} of #{@@steps} steps, property: #{property.name} \r"
+                    if _compare(property.value, @string)
+                      $result << { build_type_id: "#{element[:build_type_id]}", step: step, property: property } 
+                      print "#{element[:build_type_id]} -  #{property.name} " + fill + "\n"           
+                    end                
+                  end                     
+                end
+              end
+            end 
+          @counter_properties = @counter_properties + 1  
+          end
+        rescue
+          puts "Error:"
+          puts $!, $@
+          $erros << "_get_properties> Build:#{build_type}"
+          sleep 15
+          next
         end
       end 
       80.times do print ' ' end 
