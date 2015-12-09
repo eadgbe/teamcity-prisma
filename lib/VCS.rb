@@ -58,7 +58,8 @@ module TeamcityRuby
       ThreadsWait.all_waits(threads)
          
       $result.flatten!()
-      puts "\n\nTotal of items found: #{$result.count}"        
+      puts "\n\nTotal of items found: #{$result.count}"
+      puts $result.pretty_inspect()        
     end   
     
     def _find_custom_period_property(vcs_roots)  
@@ -70,19 +71,27 @@ module TeamcityRuby
 
       vcs_roots.each do |vcs_root|   
         
-        print "#{counter*100/@@blocks_total.round/total}%#{9.chr}modificationCheckInterval: "
-        80.times do print ' ' end
-        print "\r"
-        print "#{counter*100/@@blocks_total.round/total}%#{9.chr}modificationCheckInterval: #{vcs_root.id} \r"
+        if $debug_print
+          print "#{counter*100/@@blocks_total.round/total}%#{9.chr}modificationCheckInterval: "
+          80.times do print ' ' end
+          print "\r"
+          print "#{counter*100/@@blocks_total.round/total}%#{9.chr}modificationCheckInterval: #{vcs_root.id} \r"
+        end
         
         unless TeamCity.vcs_root_details(vcs_root.id).modificationCheckInterval.nil?
-          @@elements.push(vcs_root)          
-          print "#{vcs_root.id}" + fill + "\n"        
+          @@elements.push(vcs_root)     
+          if $debug_print     
+            print "#{vcs_root.id}" + fill + "\n"
+          else
+            print '.'
+          end        
         end              
         counter = counter + 1
-      end        
-      150.times{print ' '}
-      print"\r"   
+      end
+      if $debug_print        
+        150.times{print ' '}
+        print"\r"
+      end
     end
     
     def _find_custom_period_string(elements)     
@@ -92,20 +101,27 @@ module TeamcityRuby
       fill = ''
       65.times do fill = fill + ' ' end
      
-      elements.each() do |element|     
-        print "#{counter*100/@@blocks_total.round/total}% compare: "
-        90.times do print ' ' end
-        print "\r"
-        print "#{counter*100/@@blocks_total.round/total}% compare: #{element.id} \r"       
+      elements.each() do |element|
+        if $debug_print     
+          print "#{counter*100/@@blocks_total.round/total}% compare: "
+          90.times do print ' ' end
+          print "\r"
+          print "#{counter*100/@@blocks_total.round/total}% compare: #{element.id} \r"
+        end       
         if _compare(TeamCity.vcs_root_details(element.id).modificationCheckInterval, @string)
           result.push(element)
-          print "#{element.id} - #{TeamCity.vcs_root_details(element.id).modificationCheckInterval}" + fill + "\n"
+          if $print_debug
+            print "#{element.id} - #{TeamCity.vcs_root_details(element.id).modificationCheckInterval}" + fill + "\n"
+          else
+            print '.'
+          end
         end         
         counter = counter + 1     
       end
-      
-      80.times do print ' ' end 
-      print "\r"    
+      if $debug_print
+        80.times do print ' ' end 
+        print "\r"    
+      end
       $result << result
     end
     
